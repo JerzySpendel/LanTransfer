@@ -4,6 +4,8 @@ from PyQt4.QtGui import *
 import socket,time,os
 def intoChunks(f):
     chunks = []
+    global CHUNK_SIZE
+    CHUNK_SIZE = 1024
     while True:
         temp = f.read(1024)
         if not temp == b'':
@@ -11,6 +13,8 @@ def intoChunks(f):
         elif temp == b'':
             break
     return chunks
+def percent(my,all):
+    return int((my/all)*100)
 class UploadProcess(QThread):
     def __init__(self):
         QThread.__init__(self)
@@ -23,6 +27,7 @@ class UploadProcess(QThread):
     def run(self):
         channel,addr = self.s.accept()
         f = open(self.path,'rb')
+        sent = 0
         bytes = os.path.getsize(self.path)
         if channel.recv(1024).decode('utf-8') == 'name please':
             channel.send(self.name.encode('utf-8'))
@@ -32,6 +37,8 @@ class UploadProcess(QThread):
             while True:
                 for chunk in intoChunks(f):
                     channel.send(chunk)
+                    sent = sent + CHUNK_SIZE
+                    QObject.emit(self,SIGNAL('wyslano(int)'),percent(sent,bytes))
                     if channel.recv(1024).decode('utf-8') == 'more':
                         continue
             channel.send(b'end')
@@ -52,14 +59,14 @@ class DownloadProcess(QThread):
         print('Ilość kawałków: ',size)
         self.s.send(b'file please')
         f = open(name,'wb')
-        while True:
+        got = 0
+        while not got >= size:
             data = self.s.recv(1024)
-            try:
-                if data.decode('utf-8') == 'end':
-                    break
-            except Exception:
-                pass
+            got = got + len(data)
             f.write(data)
             f.flush()
+            print('Otrzymano ',got,' bajtów')
             self.s.send(b'more')
+            QObject.emit(self,SIGNAL('aktualizacja(int)'),percent(got,size))
+        print('Koniec pobierania')
         self.s.close()

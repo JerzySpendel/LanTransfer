@@ -25,9 +25,13 @@ class StreamWidget(QWidget):
         self.uploadthread.config(path)
         print('stream started')
         self.uploadthread.start()
+    def changed(self,msg):
+        self.ui.progressBar.setValue(msg)
+        self.ui.progressBar.update()
     def initSignals(self):
         QObject.connect(self.ui.pushButton,SIGNAL('clicked()'),self.filedialog)
         QObject.connect(self.ui.pushButton_2,SIGNAL('clicked()'),self.stream)
+        QObject.connect(self.uploadthread,SIGNAL('wyslano(int)'),self.changed)
 class DownloadWidget(QWidget):
     def __init__(self,parent=None):
         QWidget.__init__(self,parent)
@@ -42,17 +46,18 @@ class DownloadWidget(QWidget):
     def download(self):
         self.downloadthread.config(self.ui.lineEdit.text())
         self.downloadthread.start()
+    def changed(self,msg):
+        self.ui.progressBar.setValue(msg)
+        self.ui.progressBar.update()
     def initSignals(self):
         QObject.connect(self.ui.pushButton_2,SIGNAL('clicked()'),self.filedialog)
         QObject.connect(self.ui.pushButton,SIGNAL('clicked()'),self.download)
+        QObject.connect(self.downloadthread,SIGNAL('aktualizacja(int)'),self.changed)
 class SelectWidget(QWidget):
     def __init__(self,parent=None):
         QWidget.__init__(self,parent)
         self.ui = Ui_Form()
         self.ui.setupUi(self)
-    def test(self):
-        print("test")
-
 
 class MainWindow(QMainWindow):
     def __init__(self):
