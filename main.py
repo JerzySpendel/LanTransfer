@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'main.ui'
 #
-# Created: Wed Jun 19 22:53:01 2013
+# Created: Sat Jun 22 18:23:00 2013
 #      by: PyQt4 UI code generator 4.10.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -43,7 +43,7 @@ class Ui_MainWindow(object):
         self.widget.setGeometry(QtCore.QRect(10, 330, 120, 80))
         self.widget.setObjectName(_fromUtf8("widget"))
         self.pushButton = QtGui.QPushButton(self.centralwidget)
-        self.pushButton.setGeometry(QtCore.QRect(0, 200, 80, 20))
+        self.pushButton.setGeometry(QtCore.QRect(0, 189, 91, 31))
         self.pushButton.setObjectName(_fromUtf8("pushButton"))
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)

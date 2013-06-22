@@ -5,6 +5,7 @@ from main import Ui_MainWindow
 from selectwidget import Ui_Form
 from streamwidget import Ui_Form as Stream_Form
 from downloadwidget import Ui_Form as DStream_Form
+from aboutwidget import Ui_Form as About_Form
 from UploadProcess import UploadProcess as UP
 from UploadProcess import DownloadProcess as DP
 class StreamWidget(QWidget):
@@ -58,7 +59,12 @@ class SelectWidget(QWidget):
         QWidget.__init__(self,parent)
         self.ui = Ui_Form()
         self.ui.setupUi(self)
-
+class About(QWidget):
+    def __init__(self):
+        QWidget.__init__(self)
+        self.ui = About_Form()
+        self.ui.setupUi(self)
+        self.show()
 class MainWindow(QMainWindow):
     def __init__(self):
         QMainWindow.__init__(self)
@@ -83,10 +89,14 @@ class MainWindow(QMainWindow):
         self.initSignals()
     def setPath(self):
         pass
+    def about(self):
+        ab = About()
+        print('about...')
     def initSignals(self):
         QObject.connect(self.select.ui.pushButton,SIGNAL('clicked()'),self.changeToUploadMode)
         QObject.connect(self.select.ui.pushButton_2,SIGNAL('clicked()'),self.changeToDownloadMode)
         QObject.connect(self.ui.pushButton,SIGNAL('clicked()'),self.changeToMainMode)
+        QObject.connect(self.ui.actionAbout_this_program,SIGNAL('clicked()'),self.about)
 app = QApplication(sys.argv)
 okienko = MainWindow()
 app.exec_()

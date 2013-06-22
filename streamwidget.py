@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'streamwidget.ui'
 #
-# Created: Wed Jun 19 22:53:01 2013
+# Created: Sat Jun 22 18:23:00 2013
 #      by: PyQt4 UI code generator 4.10.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -34,7 +34,7 @@ class Ui_Form(object):
         self.lineEdit.setGeometry(QtCore.QRect(160, 20, 181, 31))
         self.lineEdit.setObjectName(_fromUtf8("lineEdit"))
         self.progressBar = QtGui.QProgressBar(Form)
-        self.progressBar.setGeometry(QtCore.QRect(230, 100, 118, 23))
+        self.progressBar.setGeometry(QtCore.QRect(220, 100, 118, 23))
         self.progressBar.setProperty("value", 24)
         self.progressBar.setObjectName(_fromUtf8("progressBar"))
         self.pushButton_2 = QtGui.QPushButton(Form)

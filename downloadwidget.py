@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'downloadwidget.ui'
 #
-# Created: Wed Jun 19 22:53:01 2013
+# Created: Sat Jun 22 18:23:00 2013
 #      by: PyQt4 UI code generator 4.10.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -37,7 +37,7 @@ class Ui_Form(object):
         self.pushButton.setGeometry(QtCore.QRect(0, 120, 80, 20))
         self.pushButton.setObjectName(_fromUtf8("pushButton"))
         self.progressBar = QtGui.QProgressBar(Form)
-        self.progressBar.setGeometry(QtCore.QRect(140, 150, 118, 23))
+        self.progressBar.setGeometry(QtCore.QRect(130, 121, 118, 21))
         self.progressBar.setProperty("value", 24)
         self.progressBar.setObjectName(_fromUtf8("progressBar"))
         self.label_2 = QtGui.QLabel(Form)
