@@ -60,11 +60,17 @@ class SelectWidget(QWidget):
         self.ui = Ui_Form()
         self.ui.setupUi(self)
 class About(QWidget):
-    def __init__(self):
-        QWidget.__init__(self)
+    def __init__(self,parent=None):
+        QWidget.__init__(self,parent)
         self.ui = About_Form()
         self.ui.setupUi(self)
+        self.initSignals()
         self.show()
+    def close(self):
+        self.hide()
+        self.setParent(None)
+    def initSignals(self):
+        QObject.connect(self.ui.pushButton,SIGNAL('clicked()'),self.close)
 class MainWindow(QMainWindow):
     def __init__(self):
         QMainWindow.__init__(self)
@@ -90,13 +96,13 @@ class MainWindow(QMainWindow):
     def setPath(self):
         pass
     def about(self):
-        ab = About()
+        self.ab = About()
         print('about...')
     def initSignals(self):
         QObject.connect(self.select.ui.pushButton,SIGNAL('clicked()'),self.changeToUploadMode)
         QObject.connect(self.select.ui.pushButton_2,SIGNAL('clicked()'),self.changeToDownloadMode)
         QObject.connect(self.ui.pushButton,SIGNAL('clicked()'),self.changeToMainMode)
-        QObject.connect(self.ui.actionAbout_this_program,SIGNAL('clicked()'),self.about)
+        QObject.connect(self.ui.actionAbout_this_program,SIGNAL('triggered()'),self.about)
 app = QApplication(sys.argv)
 okienko = MainWindow()
 app.exec_()

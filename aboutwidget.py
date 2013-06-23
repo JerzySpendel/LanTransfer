@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'about.ui'
 #
-# Created: Sat Jun 22 18:23:00 2013
+# Created: Sun Jun 23 12:16:56 2013
 #      by: PyQt4 UI code generator 4.10.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -33,6 +33,9 @@ class Ui_Form(object):
         self.label.setAcceptDrops(True)
         self.label.setWordWrap(True)
         self.label.setObjectName(_fromUtf8("label"))
+        self.pushButton = QtGui.QPushButton(Form)
+        self.pushButton.setGeometry(QtCore.QRect(300, 250, 80, 20))
+        self.pushButton.setObjectName(_fromUtf8("pushButton"))
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -40,4 +43,5 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         Form.setWindowTitle(_translate("Form", "Form", None))
         self.label.setText(_translate("Form", "LanTrasfer aims to provide users way to share files in such a network like LAN. LanTransfer is under GPL 3.0 license.", None))
+        self.pushButton.setText(_translate("Form", "Close", None))
 

@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Upload File</string>
+    <string>Stram FIle</string>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton_2">
