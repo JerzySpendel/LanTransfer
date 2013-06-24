@@ -50,10 +50,17 @@ class DownloadWidget(QWidget):
     def changed(self,msg):
         self.ui.progressBar.setValue(msg)
         self.ui.progressBar.update()
+    def updateSpeed(self,msg):
+        self.speed = msg
+    def updateTime(self,msg):
+        self.time = msg
+        self.ui.label_4.setText('Pozostalo: '+str(self.time)+' sekund')
     def initSignals(self):
         QObject.connect(self.ui.pushButton_2,SIGNAL('clicked()'),self.filedialog)
         QObject.connect(self.ui.pushButton,SIGNAL('clicked()'),self.download)
         QObject.connect(self.downloadthread,SIGNAL('aktualizacja(int)'),self.changed)
+        QObject.connect(self.downloadthread,SIGNAL('updateTime(int)'),self.updateTime)
+        QObject.connect(self.downloadthread,SIGNAL('updateSpeed(int)'),self.updateSpeed)
 class SelectWidget(QWidget):
     def __init__(self,parent=None):
         QWidget.__init__(self,parent)

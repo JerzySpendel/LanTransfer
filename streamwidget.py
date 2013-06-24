@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'streamwidget.ui'
 #
-# Created: Sun Jun 23 12:16:56 2013
+# Created: Mon Jun 24 17:13:27 2013
 #      by: PyQt4 UI code generator 4.10.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,7 +26,7 @@ except AttributeError:
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName(_fromUtf8("Form"))
-        Form.resize(351, 128)
+        Form.resize(577, 128)
         self.pushButton = QtGui.QPushButton(Form)
         self.pushButton.setGeometry(QtCore.QRect(0, 20, 151, 31))
         self.pushButton.setObjectName(_fromUtf8("pushButton"))
@@ -40,6 +40,10 @@ class Ui_Form(object):
         self.pushButton_2 = QtGui.QPushButton(Form)
         self.pushButton_2.setGeometry(QtCore.QRect(0, 100, 91, 20))
         self.pushButton_2.setObjectName(_fromUtf8("pushButton_2"))
+        self.label = QtGui.QLabel(Form)
+        self.label.setGeometry(QtCore.QRect(340, 100, 211, 21))
+        self.label.setText(_fromUtf8(""))
+        self.label.setObjectName(_fromUtf8("label"))
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)

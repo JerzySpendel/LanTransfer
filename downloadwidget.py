@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'downloadwidget.ui'
 #
-# Created: Sun Jun 23 12:16:56 2013
+# Created: Mon Jun 24 17:13:26 2013
 #      by: PyQt4 UI code generator 4.10.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -53,6 +53,10 @@ class Ui_Form(object):
         self.label_3.setText(_fromUtf8(""))
         self.label_3.setWordWrap(True)
         self.label_3.setObjectName(_fromUtf8("label_3"))
+        self.label_4 = QtGui.QLabel(Form)
+        self.label_4.setGeometry(QtCore.QRect(250, 120, 221, 21))
+        self.label_4.setText(_fromUtf8(""))
+        self.label_4.setObjectName(_fromUtf8("label_4"))
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)

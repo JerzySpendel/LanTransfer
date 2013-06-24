@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>351</width>
+    <width>577</width>
     <height>128</height>
    </rect>
   </property>
@@ -62,10 +62,24 @@
     <string>Stream File</string>
    </property>
   </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>340</x>
+     <y>100</y>
+     <width>211</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
   <zorder>lineEdit</zorder>
   <zorder>progressBar</zorder>
   <zorder>pushButton_2</zorder>
   <zorder>pushButton</zorder>
+  <zorder>label</zorder>
  </widget>
  <resources/>
  <connections/>

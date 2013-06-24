@@ -1,13 +1,12 @@
 __author__ = 'jurek'
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-import socket,time,os
+import socket,time,os,time
+CHUNK_SIZE = (2**20)
 def intoChunks(f):
     chunks = []
-    global CHUNK_SIZE
-    CHUNK_SIZE = 1024
     while True:
-        temp = f.read(1024)
+        temp = f.read(CHUNK_SIZE)
         if not temp == b'':
             chunks.append(temp)
         elif temp == b'':
@@ -46,9 +45,17 @@ class DownloadProcess(QThread):
     def __init__(self):
         QThread.__init__(self)
         self.s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+        self.emiter = Emiter()
+        self.emiter.start()
+        QObject.connect(self.emiter,SIGNAL('wakeup()'),self.czas)
     def config(self,ip):
         self.ip = ip
         print('Adres IP ustawiono na ',self.ip)
+    def czas(self):
+        speed = self.speed(bytes=self.now,time=self.time_c)
+        est_time = self.est_time(speed=speed,est_bytes=self.estimated_bytes)
+        QObject.emit(self,SIGNAL('updateSpeed(int)'),speed)
+        QObject.emit(self,SIGNAL('updateTime(int)'),est_time)
     def run(self):
         self.s.connect((self.ip,8888))
         self.s.send(b'name please')
@@ -56,17 +63,36 @@ class DownloadProcess(QThread):
         print('Nazwa pliku: ',name)
         self.s.send(b'size please')
         size = int(self.s.recv(1024).decode('utf-8'))
-        print('Ilość kawałków: ',size)
+        print('Ilość bajtów: ',size)
         self.s.send(b'file please')
         f = open(name,'wb')
         got = 0
+        estimated_bytes = size
         while not got >= size:
-            data = self.s.recv(1024)
+            time_a = time.time()
+            data = self.s.recv(CHUNK_SIZE)
             got = got + len(data)
             f.write(data)
-            f.flush()
-            print('Otrzymano ',got,' bajtów')
             self.s.send(b'more')
             QObject.emit(self,SIGNAL('aktualizacja(int)'),percent(got,size))
+            time_b = time.time()
+            self.time_c = time_b-time_a
+            print('Otrzymano ',got)
+            self.estimated_bytes = size - got
+            self.now = len(data)
         print('Koniec pobierania')
         self.s.close()
+    def speed(self,bytes=None,time=None):
+        return bytes/time
+    def est_time(self,speed=None,est_bytes=None):
+        if not est_bytes == 0:
+            return est_bytes/speed
+        else:
+            return 0
+class Emiter(QThread):
+    def __init__(self):
+        QThread.__init__(self)
+    def run(self):
+        while True:
+            QObject.emit(self,SIGNAL('wakeup()'))
+            time.sleep(2)
