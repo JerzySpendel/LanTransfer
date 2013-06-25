@@ -52,10 +52,12 @@ class DownloadProcess(QThread):
         self.ip = ip
         print('Adres IP ustawiono na ',self.ip)
     def czas(self):
-        speed = self.speed(bytes=self.now,time=self.time_c)
-        est_time = self.est_time(speed=speed,est_bytes=self.estimated_bytes)
-        QObject.emit(self,SIGNAL('updateSpeed(int)'),speed)
-        QObject.emit(self,SIGNAL('updateTime(int)'),est_time)
+        try:
+            speed = self.speed(bytes=self.now,time=self.time_c)
+            est_time = self.est_time(speed=speed,est_bytes=self.estimated_bytes)
+            QObject.emit(self,SIGNAL('updateTime(PyQt_PyObject)'),"Pozostało "+str(int(est_time))+" sekund")
+        except AttributeError:
+            print('Waiting for data...')
     def run(self):
         self.s.connect((self.ip,8888))
         self.s.send(b'name please')
