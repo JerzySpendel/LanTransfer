@@ -6,14 +6,12 @@ CHUNK_SIZE = (2**20)
 
 
 def intoChunks(f):
-    chunks = []
     while True:
         temp = f.read(CHUNK_SIZE)
         if not temp == b'':
-            chunks.append(temp)
+            yield temp
         elif temp == b'':
             break
-    return chunks
 
 
 def percent(my, all):
