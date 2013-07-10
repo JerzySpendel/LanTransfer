@@ -53,7 +53,7 @@ class DownloadProcess(QThread):
     def __init__(self):
         QThread.__init__(self)
         self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.emierer = Emiter()
+        self.emiter = Emiter()
         self.emiter.start()
         QObject.connect(self.emiter, SIGNAL('wakeup()'), self.czas)
 
@@ -96,14 +96,18 @@ class DownloadProcess(QThread):
         print('Koniec pobierania')
         self.s.close()
 
+    #Calculate speed of downloading
     def speed(self, bytes=None, time=None):
         return bytes/time
 
+    #Calculate estimate time to download file
     def est_time(self, speed=None, est_bytes=None):
         if not est_bytes == 0:
             return est_bytes/speed
         else:
             return 0
+
+
 class Emiter(QThread):
     def __init__(self):
         QThread.__init__(self)

@@ -1,13 +1,16 @@
-from PyQt4.QtGui import *
+import sys
+
 from PyQt4.QtCore import *
-import sys,os
-from main import Ui_MainWindow
-from selectwidget import Ui_Form
-from streamwidget import Ui_Form as Stream_Form
-from downloadwidget import Ui_Form as DStream_Form
-from aboutwidget import Ui_Form as About_Form
+from PyQt4.QtGui import *
+from gui.main import Ui_MainWindow
+from gui.selectwidget import Ui_Form
+from gui.streamwidget import Ui_Form as Stream_Form
+from gui.downloadwidget import Ui_Form as DStream_Form
+from gui.aboutwidget import Ui_Form as About_Form
 from UploadProcess import UploadProcess as UP
 from UploadProcess import DownloadProcess as DP
+
+
 class StreamWidget(QWidget):
     def __init__(self,parent=None):
         QWidget.__init__(self,parent)
