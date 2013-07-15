@@ -66,23 +66,6 @@
     </property>
    </widget>
   </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>509</width>
-     <height>18</height>
-    </rect>
-   </property>
-   <widget class="QMenu" name="menuAbout">
-    <property name="title">
-     <string>About</string>
-    </property>
-    <addaction name="actionAbout_this_program"/>
-   </widget>
-   <addaction name="menuAbout"/>
-  </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionAbout_this_program">
    <property name="text">

@@ -1,5 +1,5 @@
 import sys
-
+from Utils import Config
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from gui.main import Ui_MainWindow
@@ -108,7 +108,24 @@ class MainWindow(QMainWindow):
         self.ui.setupUi(self)
         self.select = SelectWidget(self.ui.formLayoutWidget)
         self.initSignals()
+        self.setupUi()
         self.show()
+
+    def setupUi(self):
+        self.toolBar = QToolBar(self)
+        self.toolBar.setGeometry(QRect(0, 0, 300, 26))
+        exitAction = QAction(QIcon(Config.data['EXIT_PNG']), 'Exit', self)
+        exitAction.triggered.connect(qApp.exit)
+        self.toolBar.addAction(exitAction)
+        self.toolBar.addSeparator()
+
+        configureAction = QAction(QIcon(Config.data['CONFIGURE_PNG']), 'Configure', self)
+        self.toolBar.addAction(configureAction)
+        self.toolBar.addSeparator()
+
+        aboutAction = QAction(QIcon(Config.data['ABOUT_PNG']), 'About', self)
+        aboutAction.triggered.connect(self.about)
+        self.toolBar.addAction(aboutAction)
 
     def changeToUploadMode(self):
         self.select.setParent(None)
@@ -141,6 +158,7 @@ class MainWindow(QMainWindow):
         QObject.connect(self.ui.actionAbout_this_program, SIGNAL('triggered()'), self.about)
 
 
+Config.init()
 app = QApplication(sys.argv)
 okienko = MainWindow()
 app.exec_()

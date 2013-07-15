@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'main.ui'
 #
-# Created: Mon Jun 24 17:13:26 2013
+# Created: Mon Jul 15 20:16:25 2013
 #      by: PyQt4 UI code generator 4.10.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -17,13 +17,11 @@ except AttributeError:
 
 try:
     _encoding = QtGui.QApplication.UnicodeUTF8
-
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig, _encoding)
 except AttributeError:
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig)
-
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -48,19 +46,11 @@ class Ui_MainWindow(object):
         self.pushButton.setGeometry(QtCore.QRect(20, 190, 91, 31))
         self.pushButton.setObjectName(_fromUtf8("pushButton"))
         MainWindow.setCentralWidget(self.centralwidget)
-        self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 509, 18))
-        self.menubar.setObjectName(_fromUtf8("menubar"))
-        self.menuAbout = QtGui.QMenu(self.menubar)
-        self.menuAbout.setObjectName(_fromUtf8("menuAbout"))
-        MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtGui.QStatusBar(MainWindow)
         self.statusbar.setObjectName(_fromUtf8("statusbar"))
         MainWindow.setStatusBar(self.statusbar)
         self.actionAbout_this_program = QtGui.QAction(MainWindow)
         self.actionAbout_this_program.setObjectName(_fromUtf8("actionAbout_this_program"))
-        self.menuAbout.addAction(self.actionAbout_this_program)
-        self.menubar.addAction(self.menuAbout.menuAction())
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -69,6 +59,5 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow", None))
         self.label.setText(_translate("MainWindow", "LanTransfer", None))
         self.pushButton.setText(_translate("MainWindow", "MAIN", None))
-        self.menuAbout.setTitle(_translate("MainWindow", "About", None))
         self.actionAbout_this_program.setText(_translate("MainWindow", "About this program", None))
 

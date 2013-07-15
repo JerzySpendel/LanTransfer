@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'about.ui'
 #
-# Created: Mon Jun 24 17:13:27 2013
+# Created: Mon Jul 15 20:16:26 2013
 #      by: PyQt4 UI code generator 4.10.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -17,13 +17,11 @@ except AttributeError:
 
 try:
     _encoding = QtGui.QApplication.UnicodeUTF8
-
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig, _encoding)
 except AttributeError:
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig)
-
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -44,8 +42,6 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         Form.setWindowTitle(_translate("Form", "Form", None))
-        self.label.setText(_translate("Form",
-                                      "LanTrasfer aims to provide users way to share files in such a network like LAN. LanTransfer is under GPL 3.0 license.",
-                                      None))
+        self.label.setText(_translate("Form", "LanTrasfer aims to provide users way to share files in such a network like LAN. LanTransfer is under GPL 3.0 license.", None))
         self.pushButton.setText(_translate("Form", "Close", None))
 
