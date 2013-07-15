@@ -1,8 +1,9 @@
 __author__ = 'jurek'
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-import socket,time,os,time
-CHUNK_SIZE = (2**20)
+import socket, time, os, time
+
+CHUNK_SIZE = (2 ** 20)
 
 
 def intoChunks(f):
@@ -15,13 +16,13 @@ def intoChunks(f):
 
 
 def percent(my, all):
-    return int((my/all)*100)
+    return int((my / all) * 100)
 
 
 class UploadProcess(QThread):
     def __init__(self):
         QThread.__init__(self)
-        self.s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+        self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.s.bind(('', 8888))
         self.s.listen(10)
 
@@ -43,7 +44,7 @@ class UploadProcess(QThread):
                 for chunk in intoChunks(f):
                     channel.send(chunk)
                     sent += CHUNK_SIZE
-                    QObject.emit(self, SIGNAL('wyslano(int)'),percent(sent, bytes))
+                    QObject.emit(self, SIGNAL('wyslano(int)'), percent(sent, bytes))
                     if channel.recv(1024).decode('utf-8') == 'more':
                         continue
             channel.send(b'end')
@@ -64,8 +65,8 @@ class DownloadProcess(QThread):
     def czas(self):
         try:
             speed = self.speed(bytes=self.now, time=self.time_c)
-            est_time = self.est_time(speed=speed,est_bytes=self.estimated_bytes)
-            QObject.emit(self,SIGNAL('updateTime(PyQt_PyObject)'), "Pozostało "+str(int(est_time))+" sekund")
+            est_time = self.est_time(speed=speed, est_bytes=self.estimated_bytes)
+            QObject.emit(self, SIGNAL('updateTime(PyQt_PyObject)'), "Pozostało " + str(int(est_time)) + " sekund")
         except AttributeError:
             print('Waiting for data...')
 
@@ -89,7 +90,7 @@ class DownloadProcess(QThread):
             self.s.send(b'more')
             QObject.emit(self, SIGNAL('aktualizacja(int)'), percent(got, size))
             time_b = time.time()
-            self.time_c = time_b-time_a
+            self.time_c = time_b - time_a
             print('Otrzymano ', got)
             self.estimated_bytes = size - got
             self.now = len(data)
@@ -98,12 +99,12 @@ class DownloadProcess(QThread):
 
     #Calculate speed of downloading
     def speed(self, bytes=None, time=None):
-        return bytes/time
+        return bytes / time
 
     #Calculate estimate time to download file
     def est_time(self, speed=None, est_bytes=None):
         if not est_bytes == 0:
-            return est_bytes/speed
+            return est_bytes / speed
         else:
             return 0
 
