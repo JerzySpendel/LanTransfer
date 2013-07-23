@@ -18,7 +18,7 @@ class Config(object):
         for line in Config.file.readlines():
             data = line.split(':')
             if not data[0].strip() in ('THREADS', 'DOWNLOAD_MAX', 'UPLOAD_MAX'):
-                raise Exception('Wrong data in config file, please delete config file to recreate it')
+                raise Exception('Wrong data in config file, please delete config file to recreate it!')
             Config.data[data[0]] = data[1].strip()
         Config.data['CWD'] = os.getcwd()
         Config.initResourcePaths()
