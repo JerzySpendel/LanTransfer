@@ -7,8 +7,8 @@ from gui.selectwidget import Ui_Form
 from gui.streamwidget import Ui_Form as Stream_Form
 from gui.downloadwidget import Ui_Form as DStream_Form
 from gui.aboutwidget import Ui_Form as About_Form
-from UploadProcess import UploadProcess as UP
-from UploadProcess import DownloadProcess as DP
+from NetProcesses import UploadProcess as UP
+from NetProcesses import DownloadProcess as DP
 
 
 class StreamWidget(QWidget):
@@ -36,10 +36,22 @@ class StreamWidget(QWidget):
         self.ui.progressBar.setValue(msg)
         self.ui.progressBar.update()
 
+    def makeBusy(self):
+        self.ui.progressBar.setMinimum(0)
+        self.ui.progressBar.setMaximum(0)
+        self.ui.progressBar.update()
+
+    def unmakeBusy(self):
+        self.ui.progressBar.setMinimum(0)
+        self.ui.progressBar.setMaximum(100)
+        self.ui.progressBar.update()
+
     def initSignals(self):
         QObject.connect(self.ui.pushButton, SIGNAL('clicked()'), self.filedialog)
         QObject.connect(self.ui.pushButton_2, SIGNAL('clicked()'), self.stream)
         QObject.connect(self.uploadthread, SIGNAL('wyslano(int)'), self.changed)
+        QObject.connect(self.uploadthread,SIGNAL('makeBusy()'), self.makeBusy)
+        QObject.connect(self.uploadthread, SIGNAL('unmakeBusy()'), self.unmakeBusy)
 
 
 class DownloadWidget(QWidget):

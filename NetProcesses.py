@@ -31,7 +31,9 @@ class UploadProcess(QThread):
         self.name = os.path.basename(self.path)
 
     def run(self):
+        QObject.emit(self,SIGNAL('makeBusy()'))
         channel, addr = self.s.accept()
+        QObject.emit(self,SIGNAL('unmakeBusy()'))
         f = open(self.path, 'rb')
         sent = 0
         bytes = os.path.getsize(self.path)
