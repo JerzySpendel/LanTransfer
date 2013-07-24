@@ -64,8 +64,9 @@ class DownloadWidget(QWidget):
 
     def filedialog(self):
         dialog = QFileDialog()
-        self.path = dialog.getOpenFileName()
+        self.path = dialog.getExistingDirectory(self,'Select Directory')
         self.ui.label_3.setText(str(self.path))
+        self.downloadthread.config(self.ui.lineEdit.text(), path=self.path)
 
     def download(self):
         self.downloadthread.config(self.ui.lineEdit.text())
