@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'about.ui'
 #
-# Created: Tue Jul 23 14:56:08 2013
+# Created: Fri Jul 26 22:23:55 2013
 #      by: PyQt4 UI code generator 4.10.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -29,13 +29,16 @@ class Ui_Form(object):
         Form.resize(400, 300)
         self.label = QtGui.QLabel(Form)
         self.label.setEnabled(True)
-        self.label.setGeometry(QtCore.QRect(10, 10, 371, 261))
+        self.label.setGeometry(QtCore.QRect(20, 190, 371, 41))
         self.label.setAcceptDrops(True)
         self.label.setWordWrap(True)
         self.label.setObjectName(_fromUtf8("label"))
         self.pushButton = QtGui.QPushButton(Form)
         self.pushButton.setGeometry(QtCore.QRect(300, 250, 80, 20))
         self.pushButton.setObjectName(_fromUtf8("pushButton"))
+        self.widget = QtGui.QWidget(Form)
+        self.widget.setGeometry(QtCore.QRect(110, 20, 181, 151))
+        self.widget.setObjectName(_fromUtf8("widget"))
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)

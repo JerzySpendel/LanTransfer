@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'selectwidget.ui'
 #
-# Created: Tue Jul 23 14:56:08 2013
+# Created: Fri Jul 26 22:23:54 2013
 #      by: PyQt4 UI code generator 4.10.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -39,6 +39,6 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         Form.setWindowTitle(_translate("Form", "Form", None))
-        self.pushButton.setText(_translate("Form", "Stram FIle", None))
+        self.pushButton.setText(_translate("Form", "Stream FIle", None))
         self.pushButton_2.setText(_translate("Form", "Receive File", None))
 

@@ -7,6 +7,7 @@ from gui.selectwidget import Ui_Form
 from gui.streamwidget import Ui_Form as Stream_Form
 from gui.downloadwidget import Ui_Form as DStream_Form
 from gui.aboutwidget import Ui_Form as About_Form
+from gui.optionswidget import Ui_Form as Options_Form
 from NetProcesses import UploadProcess as UP
 from NetProcesses import DownloadProcess as DP
 
@@ -98,11 +99,16 @@ class SelectWidget(QWidget):
         self.ui.setupUi(self)
 
 
-class About(QWidget):
+class AboutWidget(QWidget):
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
         self.ui = About_Form()
         self.ui.setupUi(self)
+        l = QLabel(self.ui.widget)
+        print(self.ui.widget.width)
+        pixmap = QPixmap(Config.data['GNU_PNG'])
+        pixmap = pixmap.scaled(QSize(self.ui.widget.width(),self.ui.widget.height()))
+        l.setPixmap(pixmap)
         self.initSignals()
         self.show()
 
@@ -112,6 +118,19 @@ class About(QWidget):
 
     def initSignals(self):
         QObject.connect(self.ui.pushButton, SIGNAL('clicked()'), self.close)
+
+class OptionsWidget(QWidget):
+    def __init__(self, parent=None):
+        QWidget.__init__(self,parent)
+        self.ui = Options_Form()
+        self.ui.setupUi(self)
+
+        self.initSignals()
+        self.show()
+    def close(self):
+        pass
+    def initSignals(self):
+        QObject.connect(self.ui.pushButton, SIGNAL('clicked'), self.close)
 
 
 class MainWindow(QMainWindow):
@@ -133,6 +152,7 @@ class MainWindow(QMainWindow):
         self.toolBar.addSeparator()
 
         configureAction = QAction(QIcon(Config.data['CONFIGURE_PNG']), 'Configure', self)
+        configureAction.triggered.connect(self.options)
         self.toolBar.addAction(configureAction)
         self.toolBar.addSeparator()
 
@@ -161,8 +181,12 @@ class MainWindow(QMainWindow):
         pass
 
     def about(self):
-        self.ab = About()
+        self.ab = AboutWidget()
         print('about...')
+
+    def options(self):
+        self.opt = OptionsWidget()
+        print('Options...')
 
     def initSignals(self):
         QObject.connect(self.select.ui.pushButton, SIGNAL('clicked()'), self.changeToUploadMode)

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'downloadwidget.ui'
 #
-# Created: Tue Jul 23 14:56:08 2013
+# Created: Fri Jul 26 22:23:54 2013
 #      by: PyQt4 UI code generator 4.10.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,7 +26,7 @@ except AttributeError:
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName(_fromUtf8("Form"))
-        Form.resize(479, 175)
+        Form.resize(479, 154)
         self.label = QtGui.QLabel(Form)
         self.label.setGeometry(QtCore.QRect(0, 10, 141, 16))
         self.label.setObjectName(_fromUtf8("label"))
@@ -38,13 +38,13 @@ class Ui_Form(object):
         self.pushButton.setObjectName(_fromUtf8("pushButton"))
         self.progressBar = QtGui.QProgressBar(Form)
         self.progressBar.setGeometry(QtCore.QRect(130, 121, 118, 21))
-        self.progressBar.setProperty("value", 24)
+        self.progressBar.setProperty("value", 0)
         self.progressBar.setObjectName(_fromUtf8("progressBar"))
         self.label_2 = QtGui.QLabel(Form)
         self.label_2.setGeometry(QtCore.QRect(0, 40, 81, 16))
         self.label_2.setObjectName(_fromUtf8("label_2"))
         self.pushButton_2 = QtGui.QPushButton(Form)
-        self.pushButton_2.setGeometry(QtCore.QRect(140, 40, 80, 20))
+        self.pushButton_2.setGeometry(QtCore.QRect(60, 40, 80, 20))
         self.pushButton_2.setObjectName(_fromUtf8("pushButton_2"))
         self.label_3 = QtGui.QLabel(Form)
         self.label_3.setGeometry(QtCore.QRect(0, 80, 471, 31))
@@ -57,6 +57,12 @@ class Ui_Form(object):
         self.label_4.setGeometry(QtCore.QRect(250, 120, 221, 21))
         self.label_4.setText(_fromUtf8(""))
         self.label_4.setObjectName(_fromUtf8("label_4"))
+        self.pushButton_3 = QtGui.QPushButton(Form)
+        self.pushButton_3.setGeometry(QtCore.QRect(170, 40, 80, 20))
+        self.pushButton_3.setObjectName(_fromUtf8("pushButton_3"))
+        self.label_5 = QtGui.QLabel(Form)
+        self.label_5.setGeometry(QtCore.QRect(150, 40, 21, 21))
+        self.label_5.setObjectName(_fromUtf8("label_5"))
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -65,6 +71,8 @@ class Ui_Form(object):
         Form.setWindowTitle(_translate("Form", "Form", None))
         self.label.setText(_translate("Form", "Receive file from this IP:", None))
         self.pushButton.setText(_translate("Form", "Download ", None))
-        self.label_2.setText(_translate("Form", "And save as:", None))
+        self.label_2.setText(_translate("Form", "And save:", None))
         self.pushButton_2.setText(_translate("Form", "Set path", None))
+        self.pushButton_3.setText(_translate("Form", "Save As", None))
+        self.label_5.setText(_translate("Form", "or", None))
 
