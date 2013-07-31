@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Stream FIle</string>
+    <string>Stream File</string>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton_2">

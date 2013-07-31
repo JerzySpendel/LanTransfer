@@ -1,6 +1,7 @@
 # -*- coding: UTF-8 -*-
 
 __author__ = 'jurek'
+import pdb
 import socket
 import time
 import os
@@ -11,7 +12,7 @@ from multiprocessing import Process
 
 
 #The size of chunk sendalling through sockets
-CHUNK_SIZE = 4096
+CHUNK_SIZE = 2048
 
 #Function return list of generators
 #Each of generator is used to sendall part of file to corresposnding input socket to recipient
@@ -23,7 +24,11 @@ def intoChunks(file_path, amount_of_generators):
 
         def generator():
             while True:
-                yield f.read(CHUNK_SIZE)
+                data = f.read(CHUNK_SIZE)
+                if data != b'':
+                    yield data
+                else:
+                    break
 
         return generator
 
@@ -84,9 +89,11 @@ class UploadProcess(QThread):
             channel, addr = self.s.accept()
             for chunk in self.generator():
                 if channel.recv(1024).decode('utf-8') == 'more please':
-                    channel.sendall(chunk)
-            if channel.recv(1024).decode('utf-8') == 'more please':
-                channel.sendall(b'No MoRe bYYtes!#$@!df so sad :<')
+                    sent = channel.send(chunk)
+            channel.recv(1024)
+            channel.send(b'No MoRe bYYtes!#$@!df so sad :<')
+            channel.close()
+            self.s.close()
 
     def __init__(self):
         QThread.__init__(self)
@@ -105,7 +112,7 @@ class UploadProcess(QThread):
     def setMD5(self, md5):
         self.md5_checksum = md5
 
-    #Compute MD5 in other thread while file is sendalling
+    #Compute MD5 in other thread while file is sending
     def md5(self, here):
         self.computeMD5.start()
 
@@ -139,7 +146,7 @@ class UploadProcess(QThread):
 class DownloadProcess(QThread):
 
     class Download(QThread):
-        def __init__(self, port, ip, file_path):
+        def __init__(self, port, ip, file_path, DM):
             print('port: ', port, ' ip:', ip, ' file_path:', file_path)
             QThread.__init__(self)
             self.port = port
@@ -148,20 +155,45 @@ class DownloadProcess(QThread):
             print('Download start for port ', port)
             self.s.connect((self.ip,self.port))
             self.f = open(file_path, 'wb')
+            self.DM = DM
 
         def run(self):
             print('Download at port ', str(self.port), 'started')
-            data = b'some'
+            self.s.send(b'more please')
+            data = self.s.recv(CHUNK_SIZE)
             got = 0
             while data != b'No MoRe bYYtes!#$@!df so sad :<':
+                self.f.write(data)
                 self.s.sendall(b'more please')
                 data = self.s.recv(CHUNK_SIZE)
-                got += len(data)
-                self.f.write(data)
             self.f.flush()
-
+            self.s.close()
+            print('Thread no',str(self.port - 8880),'finished downloading')
+            self.DM.dones[self.port - 8881] = True
+            print(self.DM.dones)
     #Class to manage single downloading threads
     class DownloadManager():
+        class DownloadChecker(QThread):
+            def __init__(self, DM):
+                QThread.__init__(self)
+                self.DM = DM
+
+            def run(self):
+                while True:
+                    if self.DM.dones == [True]*self.DM.threads:
+                        f = open(self.DM.folder_path + '/' + self.DM.name, 'wb')
+                        part_files = []
+                        for i in range(1, self.DM.threads + 1):
+                            part_files.append(self.DM.folder_path + '/' + 'filepart.' + str(i))
+                        for file in part_files:
+                            print('Zapisuje')
+                            fr = open(file,'rb')
+                            f.write(fr.read())
+                            os.remove(file)
+                        break
+                    else:
+                        time.sleep(0.5)
+
         def __init__(self, ip, main_socket, folder_path):
             self.ip = ip
             self.main_socket = main_socket
@@ -176,15 +208,18 @@ class DownloadProcess(QThread):
             self.size = int(self.main_socket.recv(1024).decode('utf-8'))
             print('Amount of bytes: ', self.size)
             self.main_socket.sendall(b'threads please')
-            self.threads = self.main_socket.recv(1024).decode('utf-8')
+            self.threads = int(self.main_socket.recv(1024).decode('utf-8'))
             print('Threads: ', self.threads)
+            self.dones = [False]*self.threads
+            self.DC = self.DownloadChecker(self)
 
         def startDownload(self):
             self.main_socket.sendall(b'file please')
+            self.DC.start()
             if self.main_socket.recv(1024).decode('utf-8') == 'sockets created':
                 print('Download is starting')
                 for i in range(1, int(self.threads)+1):
-                    download = DownloadProcess.Download(8880+i, self.ip, self.folder_path+'/filepart.'+str(i))
+                    download = DownloadProcess.Download(8880+i, self.ip, self.folder_path+'/filepart.'+str(i), self)
                     self.references.append(download)
                     download.start()
 
