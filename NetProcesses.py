@@ -89,7 +89,7 @@ class UploadProcess(QThread):
             channel, addr = self.s.accept()
             for chunk in self.generator():
                 if channel.recv(1024).decode('utf-8') == 'more please':
-                    sent = channel.send(chunk)
+                    sent = channel.sendall(chunk)
             channel.recv(1024)
             channel.send(b'No MoRe bYYtes!#$@!df so sad :<')
             channel.close()
@@ -167,6 +167,7 @@ class DownloadProcess(QThread):
                 self.s.sendall(b'more please')
                 data = self.s.recv(CHUNK_SIZE)
             self.f.flush()
+            self.f.close()
             self.s.close()
             print('Thread no',str(self.port - 8880),'finished downloading')
             self.DM.dones[self.port - 8881] = True
@@ -204,9 +205,7 @@ class DownloadProcess(QThread):
             def run(self):
                 while self.DM.dones != [True]*self.DM.threads:
                     speed = self.calculateSpeed()
-                    time = self.est_time()
                     self.DM.speed = speed
-                    self.DM.est_time = time
                     print(speed)
 
             def calculateSpeed(self):
