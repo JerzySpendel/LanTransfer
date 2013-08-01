@@ -12,7 +12,7 @@ from multiprocessing import Process
 
 
 #The size of chunk sendalling through sockets
-CHUNK_SIZE = 2048
+CHUNK_SIZE = 1024
 
 #Function return list of generators
 #Each of generator is used to sendall part of file to corresposnding input socket to recipient
@@ -192,6 +192,8 @@ class DownloadProcess(QThread):
                             fr = open(file,'rb')
                             f.write(fr.read())
                             os.remove(file)
+                        f.flush()
+                        f.close()
                         break
                     else:
                         time.sleep(0.5)
