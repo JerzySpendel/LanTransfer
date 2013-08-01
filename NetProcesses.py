@@ -274,13 +274,3 @@ class DownloadProcess(QThread):
         self.DM.getData()
         self.DM.startDownload()
         self.s.close()
-
-
-class Emiter(QThread):
-    def __init__(self):
-        QThread.__init__(self)
-
-    def run(self):
-        while True:
-            QObject.emit(self, SIGNAL('wakeup()'))
-            time.sleep(2)
