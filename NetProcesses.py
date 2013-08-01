@@ -161,8 +161,8 @@ class DownloadProcess(QThread):
             print('Download at port ', str(self.port), 'started')
             self.s.send(b'more please')
             data = self.s.recv(CHUNK_SIZE)
-            got = 0
             while data != b'No MoRe bYYtes!#$@!df so sad :<':
+                self.DM.got += len(data)
                 self.f.write(data)
                 self.s.sendall(b'more please')
                 data = self.s.recv(CHUNK_SIZE)
@@ -172,7 +172,9 @@ class DownloadProcess(QThread):
             self.DM.dones[self.port - 8881] = True
             print(self.DM.dones)
     #Class to manage single downloading threads
+
     class DownloadManager():
+
         class DownloadChecker(QThread):
             def __init__(self, DM):
                 QThread.__init__(self)
@@ -186,7 +188,6 @@ class DownloadProcess(QThread):
                         for i in range(1, self.DM.threads + 1):
                             part_files.append(self.DM.folder_path + '/' + 'filepart.' + str(i))
                         for file in part_files:
-                            print('Zapisuje')
                             fr = open(file,'rb')
                             f.write(fr.read())
                             os.remove(file)
@@ -194,12 +195,43 @@ class DownloadProcess(QThread):
                     else:
                         time.sleep(0.5)
 
+        class ProgressCalculator(QThread):
+            def __init__(self, DM):
+                QThread.__init__(self)
+                self.DM = DM
+                self.size = self.DM.size
+
+            def run(self):
+                while self.DM.dones != [True]*self.DM.threads:
+                    speed = self.calculateSpeed()
+                    time = self.est_time()
+                    self.DM.speed = speed
+                    self.DM.est_time = time
+                    print(speed)
+
+            def calculateSpeed(self):
+                got1 = self.DM.got
+                time.sleep(1)
+                got2 = self.DM.got
+                d_got = got2 - got1 #Delta of got bytes
+                speed = d_got/1000
+                return d_got/1000 #Return in kbps
+
+            def est_time(self):
+                size = self.DM.size
+                t = size/self.calculateSpeed()
+                return t/60 #Return in minutes
         def __init__(self, ip, main_socket, folder_path):
             self.ip = ip
             self.main_socket = main_socket
             self.folder_path = folder_path
             self.references = []
-
+            self.size = 0
+            self.got = 0
+            self.speed = 0
+            self.est_time = 0
+            self.emiter = Emiter()
+            self.progress = self.ProgressCalculator(self)
         def getData(self):
             self.main_socket.sendall(b'name please')
             self.name = self.main_socket.recv(1024).decode('utf-8')
@@ -216,19 +248,16 @@ class DownloadProcess(QThread):
         def startDownload(self):
             self.main_socket.sendall(b'file please')
             self.DC.start()
+            self.progress.start()
             if self.main_socket.recv(1024).decode('utf-8') == 'sockets created':
                 print('Download is starting')
                 for i in range(1, int(self.threads)+1):
                     download = DownloadProcess.Download(8880+i, self.ip, self.folder_path+'/filepart.'+str(i), self)
                     self.references.append(download)
                     download.start()
-
     def __init__(self):
         QThread.__init__(self)
         self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.emiter = Emiter()
-        self.emiter.start()
-        QObject.connect(self.emiter, SIGNAL('wakeup()'), self.czas)
 
     def config(self, ip, path=None):
         self.ip = ip
@@ -239,42 +268,11 @@ class DownloadProcess(QThread):
         self.s.connect((self.ip, 8880))
         print('IP address set for ', self.ip)
 
-    def czas(self):
-        try:
-            speed = self.speed(bytes=self.now, time=self.time_c)
-            est_time = self.est_time(speed=speed, est_bytes=self.estimated_bytes)
-            QObject.emit(self, SIGNAL('updateTime(PyQt_PyObject)'), "Pozostało " + str(int(est_time)) + " sekund")
-        except AttributeError:
-            print('Waiting for data...')
-
-    def checkFile(self, md5, file):
-        f = open(file.name, 'rb')
-        m = hashlib.md5()
-        m.update(f.read())
-        if str(m.hexdigest()) == md5:
-            return True
-        else:
-            return False
-
-            #Get information about the file from server and prepare file to write
-
-
     def run(self):
         self.DM = self.DownloadManager(self.ip, self.s, self.path)
         self.DM.getData()
         self.DM.startDownload()
         self.s.close()
-
-    #Calculate speed of downloading
-    def speed(self, bytes=None, time=None):
-        return bytes / time
-
-    #Calculate estimate time to download file
-    def est_time(self, speed=None, est_bytes=None):
-        if not est_bytes == 0:
-            return est_bytes / speed
-        else:
-            return 0
 
 
 class Emiter(QThread):
