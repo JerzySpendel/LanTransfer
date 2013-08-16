@@ -1,0 +1,18 @@
+1.Protocol description:
+
+UploadProcess after start is waiting for these commands (as a binary sequence, it is decoded to UTF-8 by server):
+
+-> b'name please', server returns file name
+
+-> b'size please', server returns size of file (DownloadProcess has to know when to stop reading bytes)
+
+-> b'threads please', server return number of threads used to upload file, each thread has
+
+-> b'file please', server starts creating sockets for stream, if it's done server sends b'sockets created'. After this
+server starts streaming each part of file on different socket, ID of socket is calculated as it's port number without 8880 (self.port - 8880,
+for example ID of socket working on port 8881 is 1). Each host socket is streaming bytes to corresponding recipient socket PARALLELY, for example
+socket with ID 1 is streaming to recipient socket with ID 1 to file filepart.1. After this recipient is putting together all part files
+to result file.
+
+
+It has to be sent in this order.

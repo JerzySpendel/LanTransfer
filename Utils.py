@@ -1,4 +1,4 @@
-__author__ = 'jurek'
+__author__ = 'Jerzy Spendel'
 import os
 
 

@@ -1,3 +1,5 @@
+__author__ = 'Jerzy Spendel'
+
 import sys
 from Utils import Config
 from PyQt4.QtCore import *
@@ -33,7 +35,7 @@ class StreamWidget(QWidget):
         print('stream started')
         self.uploadthread.start()
 
-    def changed(self, msg):
+    def updatePercent(self, msg):
         self.ui.progressBar.setValue(msg)
         self.ui.progressBar.update()
 
@@ -50,7 +52,7 @@ class StreamWidget(QWidget):
     def initSignals(self):
         QObject.connect(self.ui.pushButton, SIGNAL('clicked()'), self.filedialog)
         QObject.connect(self.ui.pushButton_2, SIGNAL('clicked()'), self.stream)
-        QObject.connect(self.uploadthread, SIGNAL('wyslano(int)'), self.changed)
+        QObject.connect(self.uploadthread, SIGNAL('updatePercent(int)'), self.updatePercent)
         QObject.connect(self.uploadthread,SIGNAL('makeBusy()'), self.makeBusy)
         QObject.connect(self.uploadthread, SIGNAL('unmakeBusy()'), self.unmakeBusy)
 
@@ -73,7 +75,8 @@ class DownloadWidget(QWidget):
         self.downloadthread.config(self.ui.lineEdit.text())
         self.downloadthread.start()
 
-    def changed(self, msg):
+    def percentUpdate(self, msg):
+        print('updatePercent signal received')
         self.ui.progressBar.setValue(msg)
         self.ui.progressBar.update()
 
@@ -87,8 +90,8 @@ class DownloadWidget(QWidget):
     def initSignals(self):
         QObject.connect(self.ui.pushButton_2, SIGNAL('clicked()'), self.filedialog)
         QObject.connect(self.ui.pushButton, SIGNAL('clicked()'), self.download)
-        QObject.connect(self.downloadthread.DM, SIGNAL('aktualizacja(int)'), self.changed)
-        QObject.connect(self.downloadthread.DM, SIGNAL('updateTime(PyQt_PyObject)'), self.updateTime)
+        QObject.connect(self.downloadthread.DM, SIGNAL('percentUpdate(int)'), self.percentUpdate)
+        QObject.connect(self.downloadthread.DM, SIGNAL('timeUpdate(PyQt_PyObject)'), self.updateTime)
         QObject.connect(self.downloadthread.DM, SIGNAL('updateSpeed(int)'), self.updateSpeed)
 
 

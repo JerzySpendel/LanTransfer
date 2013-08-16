@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 
-__author__ = 'jurek'
+__author__ = 'Jerzy Spendel'
 import pdb
 import socket
 import time
@@ -145,6 +145,7 @@ class UploadProcess(QThread):
 
 class DownloadProcess(QThread):
 
+    #Class representing single downloading thread
     class Download(QThread):
         def __init__(self, port, ip, file_path, DM):
             print('port: ', port, ' ip:', ip, ' file_path:', file_path)
@@ -172,8 +173,8 @@ class DownloadProcess(QThread):
             print('Thread no',str(self.port - 8880),'finished downloading')
             self.DM.dones[self.port - 8881] = True
             print(self.DM.dones)
-    #Class to manage single downloading threads
 
+    #Class to manage single downloading threads
     class DownloadManager(QObject):
 
         class DownloadChecker(QThread):
@@ -201,14 +202,12 @@ class DownloadProcess(QThread):
             def __init__(self, DM):
                 QThread.__init__(self)
                 self.DM = DM
-                self.size = self.DM.size
 
             def run(self):
                 while self.DM.dones != [True]*self.DM.threads:
                     speed = self.calculateSpeed()
                     self.DM.speed = speed
-                    QObject.emit(self.DM, SIGNAL('updateSpeed(int)'), int(speed))
-                    QObject.emit(self.DM, SIGNAL('updateTime(PyQt_PyObject)'), 'hahahha, 2 godziny')
+                    QObject.emit(self.DM, SIGNAL('percentUpdate(int)'), percent(self.DM.got, self.DM.size))
                     print(speed, 'kb/s')
 
             def calculateSpeed(self):
@@ -222,6 +221,8 @@ class DownloadProcess(QThread):
                 size = self.DM.size
                 t = size/self.calculateSpeed()
                 return t/60 #Return in minutes
+
+        #Download Manager constructor
         def __init__(self, ip=None, main_socket=None, folder_path=None):
             QObject.__init__(self)
             self.ip = ip
@@ -233,7 +234,7 @@ class DownloadProcess(QThread):
             self.speed = 0
             self.est_time = 0
             self.progress = self.ProgressCalculator(self)
-            QObject.emit(self, SIGNAL('updateTime(PyQt_PyObject)'), 'haha, diwe godziny')
+
 
         def getData(self):
             self.main_socket.sendall(b'name please')
@@ -273,7 +274,9 @@ class DownloadProcess(QThread):
         print('IP address set for ', self.ip)
 
     def run(self):
-        self.DM = self.DownloadManager(ip=self.ip, main_socket=self.s, folder_path=self.path)
+        self.DM.ip = self.ip
+        self.DM.main_socket = self.s
+        self.DM.folder_path = self.path
         self.DM.getData()
         self.DM.startDownload()
         self.s.close()
