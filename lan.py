@@ -81,10 +81,10 @@ class DownloadWidget(QWidget):
 
     def speedUpdate(self, msg):
         self.speed = msg
-
+        self.ui.label_3.setText(str(msg)+' kbps')
     def timeUpdate(self, msg):
         self.time = msg
-        self.ui.label_4.setText('Pozostalo: ' + str(self.time) + ' sekund')
+        self.ui.label_4.setText('Time left: ' + str(self.time) + ' seconds')
 
     def initSignals(self):
         QObject.connect(self.ui.pushButton_2, SIGNAL('clicked()'), self.filedialog)

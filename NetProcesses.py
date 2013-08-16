@@ -81,8 +81,11 @@ class UploadProcess(QThread):
             self.port = port
             self.generator = generator
             self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            self.s.bind(('',self.port))
-            self.s.listen(10)
+            try:
+                self.s.bind(('',self.port))
+                self.s.listen(10)
+            except OSError:
+                print('Couldn\'t assign port (might be already in use), try again')
 
         def run(self):
             print('Waiting on port', self.port)
@@ -220,9 +223,8 @@ class DownloadProcess(QThread):
                 return d_got/1000 #Return in kbps
 
             def est_time(self, speed):
-                size = self.DM.size
                 if speed != 0:
-                    return int(size/speed)
+                    return int((self.DM.size-self.DM.got)/(speed*1000))
                 else:
                     return '...'
 
