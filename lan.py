@@ -76,23 +76,22 @@ class DownloadWidget(QWidget):
         self.downloadthread.start()
 
     def percentUpdate(self, msg):
-        print('updatePercent signal received')
         self.ui.progressBar.setValue(msg)
         self.ui.progressBar.update()
 
-    def updateSpeed(self, msg):
+    def speedUpdate(self, msg):
         self.speed = msg
 
-    def updateTime(self, msg):
+    def timeUpdate(self, msg):
         self.time = msg
-        self.ui.label_4.setText('Pozostalo: ' + self.time + ' sekund')
+        self.ui.label_4.setText('Pozostalo: ' + str(self.time) + ' sekund')
 
     def initSignals(self):
         QObject.connect(self.ui.pushButton_2, SIGNAL('clicked()'), self.filedialog)
         QObject.connect(self.ui.pushButton, SIGNAL('clicked()'), self.download)
         QObject.connect(self.downloadthread.DM, SIGNAL('percentUpdate(int)'), self.percentUpdate)
-        QObject.connect(self.downloadthread.DM, SIGNAL('timeUpdate(PyQt_PyObject)'), self.updateTime)
-        QObject.connect(self.downloadthread.DM, SIGNAL('updateSpeed(int)'), self.updateSpeed)
+        QObject.connect(self.downloadthread.DM, SIGNAL('timeUpdate(PyQt_PyObject)'), self.timeUpdate)
+        QObject.connect(self.downloadthread.DM, SIGNAL('speedUpdate(int)'), self.speedUpdate)
 
 
 class SelectWidget(QWidget):

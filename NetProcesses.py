@@ -204,9 +204,11 @@ class DownloadProcess(QThread):
                 self.DM = DM
 
             def run(self):
-                while self.DM.dones != [True]*self.DM.threads:
+                while not self.DM.isDone():
                     speed = self.calculateSpeed()
-                    self.DM.speed = speed
+                    time = self.est_time(speed)
+                    QObject.emit(self.DM, SIGNAL('speedUpdate(int)'), speed)
+                    QObject.emit(self.DM, SIGNAL('timeUpdate(PyQt_PyObject)'), time)
                     QObject.emit(self.DM, SIGNAL('percentUpdate(int)'), percent(self.DM.got, self.DM.size))
                     print(speed, 'kb/s')
 
@@ -217,10 +219,12 @@ class DownloadProcess(QThread):
                 d_got = got2 - got1 #Delta of got bytes
                 return d_got/1000 #Return in kbps
 
-            def est_time(self):
+            def est_time(self, speed):
                 size = self.DM.size
-                t = size/self.calculateSpeed()
-                return t/60 #Return in minutes
+                if speed != 0:
+                    return int(size/speed)
+                else:
+                    return '...'
 
         #Download Manager constructor
         def __init__(self, ip=None, main_socket=None, folder_path=None):
@@ -235,6 +239,11 @@ class DownloadProcess(QThread):
             self.est_time = 0
             self.progress = self.ProgressCalculator(self)
 
+        def isDone(self):
+            if self.dones == [True]*self.threads:
+                return True
+            else:
+                return False
 
         def getData(self):
             self.main_socket.sendall(b'name please')
