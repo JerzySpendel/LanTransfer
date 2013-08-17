@@ -1,7 +1,6 @@
 # -*- coding: UTF-8 -*-
 
 __author__ = 'Jerzy Spendel'
-import pdb
 import socket
 import time
 import os
@@ -110,14 +109,6 @@ class UploadProcess(QThread):
     def config(self, path_to_file):
         self.path = path_to_file
         self.name = os.path.basename(self.path)
-        self.md5(self.md5_checksum)
-
-    def setMD5(self, md5):
-        self.md5_checksum = md5
-
-    #Compute MD5 in other thread while file is sending
-    def md5(self, here):
-        self.computeMD5.start()
 
     def run(self):
         QObject.emit(self, SIGNAL('makeBusy()'))
@@ -126,7 +117,6 @@ class UploadProcess(QThread):
         f = open(self.path, 'rb')
         sent = 0
         bytes = os.path.getsize(self.path)
-        self.md5(self.md5_checksum)
         if channel.recv(1024).decode('utf-8') == 'name please':
             channel.sendall(self.name.encode('utf-8'))
         if channel.recv(1024).decode('utf-8') == 'size please':
@@ -158,7 +148,7 @@ class DownloadProcess(QThread):
             self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             print('Download start for port ', port)
             self.s.connect((self.ip,self.port))
-            self.f = open(file_path, 'wb')
+            self.file = open(file_path, 'wb')
             self.DM = DM
 
         def run(self):
@@ -167,11 +157,11 @@ class DownloadProcess(QThread):
             data = self.s.recv(CHUNK_SIZE)
             while data != b'No MoRe bYYtes!#$@!df so sad :<':
                 self.DM.got += len(data)
-                self.f.write(data)
+                self.file.write(data)
                 self.s.sendall(b'more please')
                 data = self.s.recv(CHUNK_SIZE)
-            self.f.flush()
-            self.f.close()
+            self.file.flush()
+            self.file.close()
             self.s.close()
             print('Thread no',str(self.port - 8880),'finished downloading')
             self.DM.dones[self.port - 8881] = True
@@ -185,6 +175,9 @@ class DownloadProcess(QThread):
                 QThread.__init__(self)
                 self.DM = DM
 
+            def checkMD5(self):
+                pass
+
             def run(self):
                 while True:
                     if self.DM.dones == [True]*self.DM.threads:
@@ -194,6 +187,12 @@ class DownloadProcess(QThread):
                             part_files.append(self.DM.folder_path + '/' + 'filepart.' + str(i))
                         for file in part_files:
                             fr = open(file,'rb')
+                            try:
+                                os.remove(file)
+                            except IOError:
+                                print('I do not have acces to delete part files. Do it yourself.')
+                            except Exception:
+                                print('Error while deleting files')
                             f.write(fr.read())
                         f.flush()
                         f.close()
@@ -241,6 +240,7 @@ class DownloadProcess(QThread):
             self.est_time = 0
             self.progress = self.ProgressCalculator(self)
 
+        #self.dones contains list of done thread
         def isDone(self):
             if self.dones == [True]*self.threads:
                 return True
@@ -275,19 +275,23 @@ class DownloadProcess(QThread):
         self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.DM = self.DownloadManager()
 
-    def config(self, ip, path=None):
+    def config(self, ip, folderpath=None, filepath=None):
         self.ip = ip
-        if path is not None:
-            self.path = path
+        if folderpath is not None:
+            self.folderpath = folderpath
         else:
             self.path = Config.data['CWD']
+        if filepath is not None:
+            self.filepath = filepath
         self.s.connect((self.ip, 8880))
         print('IP address set for ', self.ip)
 
     def run(self):
+        #Both folder_path and file_path will be given to DM, but file_path has precedence and DM will use folder_path only if file_path == None
         self.DM.ip = self.ip
         self.DM.main_socket = self.s
-        self.DM.folder_path = self.path
+        self.DM.folder_path = self.folderpath
+        self.DM.file_path = self.filepath
         self.DM.getData()
         self.DM.startDownload()
         self.s.close()

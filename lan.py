@@ -65,11 +65,15 @@ class DownloadWidget(QWidget):
         self.ui.setupUi(self)
         self.initSignals()
 
-    def filedialog(self):
+    def setpath(self):
         dialog = QFileDialog()
         self.path = dialog.getExistingDirectory(self,'Select Directory')
         self.ui.label_3.setText(str(self.path))
         self.downloadthread.config(self.ui.lineEdit.text(), path=self.path)
+
+    def setfile(self):
+        dialog = QFileDialog()
+        self.filepath = dialog.getOpenFileName()
 
     def download(self):
         self.downloadthread.config(self.ui.lineEdit.text())
@@ -87,7 +91,8 @@ class DownloadWidget(QWidget):
         self.ui.label_4.setText('Time left: ' + str(self.time) + ' seconds')
 
     def initSignals(self):
-        QObject.connect(self.ui.pushButton_2, SIGNAL('clicked()'), self.filedialog)
+        QObject.connect(self.ui.pushButton_2, SIGNAL('clicked()'), self.setpath)
+        QObject.connect(self.ui.pushButton_3, SIGNAL('clicked()'), self.setfile)
         QObject.connect(self.ui.pushButton, SIGNAL('clicked()'), self.download)
         QObject.connect(self.downloadthread.DM, SIGNAL('percentUpdate(int)'), self.percentUpdate)
         QObject.connect(self.downloadthread.DM, SIGNAL('timeUpdate(PyQt_PyObject)'), self.timeUpdate)

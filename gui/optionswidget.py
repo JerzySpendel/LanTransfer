@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'options.ui'
 #
-# Created: Wed Jul 31 22:56:17 2013
+# Created: Sat Aug 17 13:25:31 2013
 #      by: PyQt4 UI code generator 4.10.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -59,7 +59,7 @@ class Ui_Form(object):
         self.lineEdit_3.setGeometry(QtCore.QRect(160, 140, 161, 21))
         self.lineEdit_3.setObjectName(_fromUtf8("lineEdit_3"))
         self.pushButton = QtGui.QPushButton(Form)
-        self.pushButton.setGeometry(QtCore.QRect(330, 170, 81, 20))
+        self.pushButton.setGeometry(QtCore.QRect(330, 169, 81, 21))
         self.pushButton.setObjectName(_fromUtf8("pushButton"))
 
         self.retranslateUi(Form)
