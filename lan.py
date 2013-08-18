@@ -131,9 +131,14 @@ class OptionsWidget(QWidget):
         QWidget.__init__(self,parent)
         self.ui = Options_Form()
         self.ui.setupUi(self)
-
+        self.initUi()
         self.initSignals()
         self.show()
+
+    def initUi(self):
+        self.ui.pushButton_2.setIcon(QIcon(Config.data['GENERAL_SETTINGS']))
+        self.ui.pushButton_3.setIcon(QIcon(Config.data['NETWORK_SETTINGS']))
+
     def close(self):
         pass
     def initSignals(self):
@@ -201,8 +206,8 @@ class MainWindow(QMainWindow):
         QObject.connect(self.ui.pushButton, SIGNAL('clicked()'), self.changeToMainMode)
         QObject.connect(self.ui.actionAbout_this_program, SIGNAL('triggered()'), self.about)
 
-
-Config.init()
-app = QApplication(sys.argv)
-okienko = MainWindow()
-app.exec_()
+if __name__ == '__main__':
+    Config.init()
+    app = QApplication(sys.argv)
+    okienko = MainWindow()
+    app.exec_()

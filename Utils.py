@@ -33,3 +33,5 @@ class Config(object):
         Config.data['CONFIGURE_PNG'] = cwd + '/resources/configure.png'
         Config.data['ABOUT_PNG'] = cwd + '/resources/about.png'
         Config.data['GNU_PNG'] = cwd + '/resources/gnu.png'
+        Config.data['GENERAL_SETTINGS'] = cwd + '/resources/general.png'
+        Config.data['NETWORK_SETTINGS'] = cwd + '/resources/network.png'
