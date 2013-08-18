@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'options.ui'
+# Form implementation generated from reading ui file 'general_settings.ui'
 #
 # Created: Sun Aug 18 23:13:36 2013
 #      by: PyQt4 UI code generator 4.10.2
@@ -26,12 +26,9 @@ except AttributeError:
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName(_fromUtf8("Form"))
-        Form.resize(582, 249)
-        self.pushButton = QtGui.QPushButton(Form)
-        self.pushButton.setGeometry(QtCore.QRect(490, 220, 81, 21))
-        self.pushButton.setObjectName(_fromUtf8("pushButton"))
+        Form.resize(361, 201)
         self.frame = QtGui.QFrame(Form)
-        self.frame.setGeometry(QtCore.QRect(150, 20, 361, 201))
+        self.frame.setGeometry(QtCore.QRect(0, 0, 361, 201))
         self.frame.setFrameShape(QtGui.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtGui.QFrame.Raised)
         self.frame.setObjectName(_fromUtf8("frame"))
@@ -67,28 +64,15 @@ class Ui_Form(object):
         self.label_4 = QtGui.QLabel(self.frame)
         self.label_4.setGeometry(QtCore.QRect(340, 10, 16, 20))
         self.label_4.setObjectName(_fromUtf8("label_4"))
-        self.pushButton_2 = QtGui.QPushButton(Form)
-        self.pushButton_2.setGeometry(QtCore.QRect(10, 20, 121, 101))
-        self.pushButton_2.setIconSize(QtCore.QSize(48, 48))
-        self.pushButton_2.setFlat(True)
-        self.pushButton_2.setObjectName(_fromUtf8("pushButton_2"))
-        self.pushButton_3 = QtGui.QPushButton(Form)
-        self.pushButton_3.setGeometry(QtCore.QRect(9, 129, 121, 91))
-        self.pushButton_3.setIconSize(QtCore.QSize(48, 48))
-        self.pushButton_3.setFlat(True)
-        self.pushButton_3.setObjectName(_fromUtf8("pushButton_3"))
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
         Form.setWindowTitle(_translate("Form", "Form", None))
-        self.pushButton.setText(_translate("Form", "Close n\' Save", None))
         self.label.setText(_translate("Form", "Max amount of threads:", None))
         self.label_2.setText(_translate("Form", "Size of chunk (in bytes): ", None))
         self.label_3.setText(_translate("Form", "Download speed limit:", None))
         self.label_5.setText(_translate("Form", "Upload speed limit:", None))
         self.label_4.setText(_translate("Form", "1", None))
-        self.pushButton_2.setText(_translate("Form", "General", None))
-        self.pushButton_3.setText(_translate("Form", "Network", None))
 
