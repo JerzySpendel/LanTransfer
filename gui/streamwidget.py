@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'streamwidget.ui'
 #
-# Created: Sun Aug 18 23:13:36 2013
+# Created: Sun Aug 18 23:40:09 2013
 #      by: PyQt4 UI code generator 4.10.2
 #
 # WARNING! All changes made in this file will be lost!

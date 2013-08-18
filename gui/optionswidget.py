@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'options.ui'
 #
-# Created: Sun Aug 18 23:13:36 2013
+# Created: Sun Aug 18 23:40:09 2013
 #      by: PyQt4 UI code generator 4.10.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,47 +26,10 @@ except AttributeError:
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName(_fromUtf8("Form"))
-        Form.resize(582, 249)
+        Form.resize(517, 267)
         self.pushButton = QtGui.QPushButton(Form)
-        self.pushButton.setGeometry(QtCore.QRect(490, 220, 81, 21))
+        self.pushButton.setGeometry(QtCore.QRect(410, 230, 81, 21))
         self.pushButton.setObjectName(_fromUtf8("pushButton"))
-        self.frame = QtGui.QFrame(Form)
-        self.frame.setGeometry(QtCore.QRect(150, 20, 361, 201))
-        self.frame.setFrameShape(QtGui.QFrame.StyledPanel)
-        self.frame.setFrameShadow(QtGui.QFrame.Raised)
-        self.frame.setObjectName(_fromUtf8("frame"))
-        self.label = QtGui.QLabel(self.frame)
-        self.label.setEnabled(True)
-        self.label.setGeometry(QtCore.QRect(10, 10, 141, 20))
-        self.label.setObjectName(_fromUtf8("label"))
-        self.label_2 = QtGui.QLabel(self.frame)
-        self.label_2.setGeometry(QtCore.QRect(10, 40, 141, 21))
-        self.label_2.setObjectName(_fromUtf8("label_2"))
-        self.horizontalSlider = QtGui.QSlider(self.frame)
-        self.horizontalSlider.setGeometry(QtCore.QRect(170, 10, 161, 21))
-        self.horizontalSlider.setMinimum(1)
-        self.horizontalSlider.setMaximum(10)
-        self.horizontalSlider.setProperty("value", 1)
-        self.horizontalSlider.setOrientation(QtCore.Qt.Horizontal)
-        self.horizontalSlider.setObjectName(_fromUtf8("horizontalSlider"))
-        self.lineEdit = QtGui.QLineEdit(self.frame)
-        self.lineEdit.setGeometry(QtCore.QRect(170, 40, 161, 21))
-        self.lineEdit.setObjectName(_fromUtf8("lineEdit"))
-        self.label_3 = QtGui.QLabel(self.frame)
-        self.label_3.setGeometry(QtCore.QRect(10, 70, 151, 21))
-        self.label_3.setObjectName(_fromUtf8("label_3"))
-        self.label_5 = QtGui.QLabel(self.frame)
-        self.label_5.setGeometry(QtCore.QRect(10, 100, 151, 21))
-        self.label_5.setObjectName(_fromUtf8("label_5"))
-        self.lineEdit_3 = QtGui.QLineEdit(self.frame)
-        self.lineEdit_3.setGeometry(QtCore.QRect(170, 100, 161, 21))
-        self.lineEdit_3.setObjectName(_fromUtf8("lineEdit_3"))
-        self.lineEdit_2 = QtGui.QLineEdit(self.frame)
-        self.lineEdit_2.setGeometry(QtCore.QRect(170, 70, 161, 21))
-        self.lineEdit_2.setObjectName(_fromUtf8("lineEdit_2"))
-        self.label_4 = QtGui.QLabel(self.frame)
-        self.label_4.setGeometry(QtCore.QRect(340, 10, 16, 20))
-        self.label_4.setObjectName(_fromUtf8("label_4"))
         self.pushButton_2 = QtGui.QPushButton(Form)
         self.pushButton_2.setGeometry(QtCore.QRect(10, 20, 121, 101))
         self.pushButton_2.setIconSize(QtCore.QSize(48, 48))
@@ -77,6 +40,9 @@ class Ui_Form(object):
         self.pushButton_3.setIconSize(QtCore.QSize(48, 48))
         self.pushButton_3.setFlat(True)
         self.pushButton_3.setObjectName(_fromUtf8("pushButton_3"))
+        self.widget_2 = QtGui.QWidget(Form)
+        self.widget_2.setGeometry(QtCore.QRect(140, 10, 371, 221))
+        self.widget_2.setObjectName(_fromUtf8("widget_2"))
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -84,11 +50,6 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         Form.setWindowTitle(_translate("Form", "Form", None))
         self.pushButton.setText(_translate("Form", "Close n\' Save", None))
-        self.label.setText(_translate("Form", "Max amount of threads:", None))
-        self.label_2.setText(_translate("Form", "Size of chunk (in bytes): ", None))
-        self.label_3.setText(_translate("Form", "Download speed limit:", None))
-        self.label_5.setText(_translate("Form", "Upload speed limit:", None))
-        self.label_4.setText(_translate("Form", "1", None))
         self.pushButton_2.setText(_translate("Form", "General", None))
         self.pushButton_3.setText(_translate("Form", "Network", None))
 

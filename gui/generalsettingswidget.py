@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'general_settings.ui'
 #
-# Created: Sun Aug 18 23:13:36 2013
+# Created: Sun Aug 18 23:40:09 2013
 #      by: PyQt4 UI code generator 4.10.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -49,18 +49,6 @@ class Ui_Form(object):
         self.lineEdit = QtGui.QLineEdit(self.frame)
         self.lineEdit.setGeometry(QtCore.QRect(170, 40, 161, 21))
         self.lineEdit.setObjectName(_fromUtf8("lineEdit"))
-        self.label_3 = QtGui.QLabel(self.frame)
-        self.label_3.setGeometry(QtCore.QRect(10, 70, 151, 21))
-        self.label_3.setObjectName(_fromUtf8("label_3"))
-        self.label_5 = QtGui.QLabel(self.frame)
-        self.label_5.setGeometry(QtCore.QRect(10, 100, 151, 21))
-        self.label_5.setObjectName(_fromUtf8("label_5"))
-        self.lineEdit_3 = QtGui.QLineEdit(self.frame)
-        self.lineEdit_3.setGeometry(QtCore.QRect(170, 100, 161, 21))
-        self.lineEdit_3.setObjectName(_fromUtf8("lineEdit_3"))
-        self.lineEdit_2 = QtGui.QLineEdit(self.frame)
-        self.lineEdit_2.setGeometry(QtCore.QRect(170, 70, 161, 21))
-        self.lineEdit_2.setObjectName(_fromUtf8("lineEdit_2"))
         self.label_4 = QtGui.QLabel(self.frame)
         self.label_4.setGeometry(QtCore.QRect(340, 10, 16, 20))
         self.label_4.setObjectName(_fromUtf8("label_4"))
@@ -72,7 +60,5 @@ class Ui_Form(object):
         Form.setWindowTitle(_translate("Form", "Form", None))
         self.label.setText(_translate("Form", "Max amount of threads:", None))
         self.label_2.setText(_translate("Form", "Size of chunk (in bytes): ", None))
-        self.label_3.setText(_translate("Form", "Download speed limit:", None))
-        self.label_5.setText(_translate("Form", "Upload speed limit:", None))
         self.label_4.setText(_translate("Form", "1", None))
 

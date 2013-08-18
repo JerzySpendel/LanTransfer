@@ -10,6 +10,8 @@ from gui.streamwidget import Ui_Form as Stream_Form
 from gui.downloadwidget import Ui_Form as DStream_Form
 from gui.aboutwidget import Ui_Form as About_Form
 from gui.optionswidget import Ui_Form as Options_Form
+from gui.generalsettingswidget import Ui_Form as GeneralSettings_Form
+from gui.networksettingswidget import Ui_Form as NetworkSettings_Form
 from NetProcesses import UploadProcess as UP
 from NetProcesses import DownloadProcess as DP
 
@@ -126,6 +128,7 @@ class AboutWidget(QWidget):
     def initSignals(self):
         QObject.connect(self.ui.pushButton, SIGNAL('clicked()'), self.close)
 
+
 class OptionsWidget(QWidget):
     def __init__(self, parent=None):
         QWidget.__init__(self,parent)
@@ -136,13 +139,50 @@ class OptionsWidget(QWidget):
         self.show()
 
     def initUi(self):
+        self.tab = GeneralSettings()
+
+        self.tab.setParent(self.ui.widget_2)
+
         self.ui.pushButton_2.setIcon(QIcon(Config.data['GENERAL_SETTINGS']))
         self.ui.pushButton_3.setIcon(QIcon(Config.data['NETWORK_SETTINGS']))
+        QObject.connect(self.ui.pushButton_2, SIGNAL('clicked()'), self.generalsettings)
+        QObject.connect(self.ui.pushButton_3, SIGNAL('clicked()'), self.networksettings)
+
+    def generalsettings(self):
+        self.tab.setParent(None)
+        self.tab = GeneralSettings(self.ui.widget_2)
+        self.tab.show()
+
+    def networksettings(self):
+        self.tab.setParent(None)
+        self.tab = NetworkSettings(self.ui.widget_2)
+        self.tab.show()
+
+
+    def updateAll(self):
+        self.general.update()
+        self.network.update()
+        self.ui.widget_2.update()
+        self.ui.widget_2.repaint()
 
     def close(self):
         pass
     def initSignals(self):
         QObject.connect(self.ui.pushButton, SIGNAL('clicked'), self.close)
+
+
+class GeneralSettings(QWidget):
+    def __init__(self,parent=None):
+        QWidget.__init__(self,parent)
+        self.ui = GeneralSettings_Form()
+        self.ui.setupUi(self)
+
+
+class NetworkSettings(QWidget):
+    def __init__(self,parent=None):
+        QWidget.__init__(self,parent)
+        self.ui = NetworkSettings_Form()
+        self.ui.setupUi(self)
 
 
 class MainWindow(QMainWindow):
