@@ -164,25 +164,19 @@ class OptionsWidget(QWidget):
         self.tab.setParent(self.ui.widget_2)
         self.tab.show()
 
-
-    def updateAll(self):
-        self.general.update()
-        self.network.update()
-        self.ui.widget_2.update()
-        self.ui.widget_2.repaint()
-
     def save(self):
         threads = self.general.ui.horizontalSlider.sliderPosition()
         chunksize = self.general.ui.lineEdit.text()
         downspeed = self.network.ui.lineEdit_2.text()
         upspeed = self.network.ui.lineEdit_3.text()
 
-
+        #Saving each property to file :)
         Config.changeProperty('THREADS', threads)
         Config.changeProperty('CHUNKSIZE', chunksize)
         Config.changeProperty('DOWNLOAD_MAX',downspeed)
-        Config.changePropertY('UPLOAD_MAX', upseed)
+        Config.changeProperty('UPLOAD_MAX', upspeed)
 
+        self.setParent(None)
     def initSignals(self):
         QObject.connect(self.ui.pushButton, SIGNAL('clicked()'), self.save)
 

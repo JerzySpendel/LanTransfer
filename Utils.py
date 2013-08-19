@@ -44,10 +44,8 @@ class Config(object):
             property = line.strip().split(':')[0]
             Value = line.strip().split(':')[1]
             if name == property:
-                print("if")
                 index = lines.index(line)
                 lines[index] = property+':'+str(value)+('\n' if line.count('\n')>0 else '')
         configF = open(Config.path, 'w')
         configF.writelines(lines)
         configF.close()
-        print(lines)
