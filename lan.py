@@ -125,6 +125,7 @@ class AboutWidget(QWidget):
         self.hide()
         self.setParent(None)
 
+
     def initSignals(self):
         QObject.connect(self.ui.pushButton, SIGNAL('clicked()'), self.close)
 

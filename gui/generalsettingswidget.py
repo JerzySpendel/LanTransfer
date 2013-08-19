@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'general_settings.ui'
 #
-# Created: Sun Aug 18 23:40:09 2013
+# Created: Mon Aug 19 21:06:56 2013
 #      by: PyQt4 UI code generator 4.10.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -60,5 +60,6 @@ class Ui_Form(object):
         Form.setWindowTitle(_translate("Form", "Form", None))
         self.label.setText(_translate("Form", "Max amount of threads:", None))
         self.label_2.setText(_translate("Form", "Size of chunk (in bytes): ", None))
+        self.lineEdit.setText(_translate("Form", "1024", None))
         self.label_4.setText(_translate("Form", "1", None))
 
