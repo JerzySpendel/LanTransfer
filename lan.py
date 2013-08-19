@@ -139,7 +139,10 @@ class OptionsWidget(QWidget):
         self.show()
 
     def initUi(self):
-        self.tab = GeneralSettings()
+        self.general = GeneralSettings()
+        self.network = NetworkSettings()
+
+        self.tab = self.general
 
         self.tab.setParent(self.ui.widget_2)
 
@@ -150,12 +153,14 @@ class OptionsWidget(QWidget):
 
     def generalsettings(self):
         self.tab.setParent(None)
-        self.tab = GeneralSettings(self.ui.widget_2)
+        self.tab = self.general
+        self.tab.setParent(self.ui.widget_2)
         self.tab.show()
 
     def networksettings(self):
         self.tab.setParent(None)
-        self.tab = NetworkSettings(self.ui.widget_2)
+        self.tab = self.network
+        self.tab.setParent(self.ui.widget_2)
         self.tab.show()
 
 
@@ -165,17 +170,33 @@ class OptionsWidget(QWidget):
         self.ui.widget_2.update()
         self.ui.widget_2.repaint()
 
-    def close(self):
-        pass
-    def initSignals(self):
-        QObject.connect(self.ui.pushButton, SIGNAL('clicked'), self.close)
+    def save(self):
+        threads = self.general.ui.horizontalSlider.sliderPosition()
+        chunksize = self.general.ui.lineEdit.text()
+        downspeed = self.network.ui.lineEdit_2.text()
+        upspeed = self.network.ui.lineEdit_3.text()
 
+
+        Config.changeProperty('THREADS', threads)
+        Config.changeProperty('CHUNKSIZE', chunksize)
+        Config.changeProperty('DOWNLOAD_MAX',downspeed)
+        Config.changePropertY('UPLOAD_MAX', upseed)
+
+    def initSignals(self):
+        QObject.connect(self.ui.pushButton, SIGNAL('clicked()'), self.save)
 
 class GeneralSettings(QWidget):
     def __init__(self,parent=None):
         QWidget.__init__(self,parent)
         self.ui = GeneralSettings_Form()
         self.ui.setupUi(self)
+        self.initUi()
+
+    def initUi(self):
+        QObject.connect(self.ui.horizontalSlider, SIGNAL('sliderMoved(int)'), self.sliderMoved)
+
+    def sliderMoved(self,msg):
+        self.ui.label_4.setText(str(msg))
 
 
 class NetworkSettings(QWidget):

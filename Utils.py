@@ -5,7 +5,8 @@ import os
 class Config(object):
     def init():
         Config.data = {}
-        path = os.path.expanduser('~') + '/.lantransfer.conf'
+        Config.path = os.path.expanduser('~') + '/.lantransfer.conf'
+        path = Config.path
         if not os.path.exists(path):
             Config.file = open(path, 'w')
             lines = ['CHUNK_SIZE:NONE\n','THREADS:NONE\n', 'DOWNLOAD_MAX:NONE\n', 'UPLOAD_MAX:NONE']
@@ -35,3 +36,18 @@ class Config(object):
         Config.data['GNU_PNG'] = cwd + '/resources/gnu.png'
         Config.data['GENERAL_SETTINGS'] = cwd + '/resources/general.png'
         Config.data['NETWORK_SETTINGS'] = cwd + '/resources/network.png'
+
+    def changeProperty(name,value):
+        configF = open(Config.path, 'r')
+        lines = configF.readlines()
+        for line in lines:
+            property = line.strip().split(':')[0]
+            Value = line.strip().split(':')[1]
+            if name == property:
+                print("if")
+                index = lines.index(line)
+                lines[index] = property+':'+str(value)+('\n' if line.count('\n')>0 else '')
+        configF = open(Config.path, 'w')
+        configF.writelines(lines)
+        configF.close()
+        print(lines)
