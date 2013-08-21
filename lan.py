@@ -193,10 +193,12 @@ class GeneralSettings(QWidget):
         QWidget.__init__(self,parent)
         self.ui = GeneralSettings_Form()
         self.ui.setupUi(self)
-        self.fillContacts()
         self.initUi()
 
     def initUi(self):
+        self.makeContacts()
+        self.makeThreads()
+        self.makeChunksize()
         QObject.connect(self.ui.horizontalSlider, SIGNAL('sliderMoved(int)'), self.sliderMoved)
         QObject.connect(self.ui.plainTextEdit, SIGNAL('textChanged()'),self.textchanged)
 
@@ -214,18 +216,35 @@ Example:
     def sliderMoved(self,msg):
         self.ui.label_4.setText(str(msg))
 
-    def fillContacts(self):
+    def makeContacts(self):
         text = ''
         for pair in Config.openContacts():
             text = text+pair[0]+' - '+pair[1]+'\n'
         self.ui.plainTextEdit.setPlainText(text)
+
+    def makeThreads(self):
+        self.ui.horizontalSlider.setValue(int(Config.data['THREADS']))
+        self.ui.label_4.setText(Config.data['THREADS'])
+
+    def makeChunksize(self):
+        self.ui.lineEdit.setText(Config.data['CHUNK_SIZE'])
 
 class NetworkSettings(QWidget):
     def __init__(self,parent=None):
         QWidget.__init__(self,parent)
         self.ui = NetworkSettings_Form()
         self.ui.setupUi(self)
+        self.initUi()
 
+    def initUi(self):
+        self.makeUpSpeed()
+        self.makeDownSpeed()
+
+    def makeUpSpeed(self):
+        self.ui.lineEdit_3.setText(str(Config.data['UPLOAD_MAX']))
+
+    def makeDownSpeed(self):
+        self.ui.lineEdit_2.setText(str(Config.data['DOWNLOAD_MAX']))
 
 class MainWindow(QMainWindow):
     def __init__(self):
