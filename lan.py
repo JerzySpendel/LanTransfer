@@ -127,7 +127,7 @@ class AboutWidget(QWidget):
         l.setPixmap(pixmap)
         self.initSignals()
         self.show()
-
+        self.setWindowTitle('About')
     def close(self):
         self.hide()
         self.setParent(None)
@@ -159,6 +159,7 @@ class OptionsWidget(QWidget):
         QObject.connect(self.ui.pushButton_2, SIGNAL('clicked()'), self.generalsettings)
         QObject.connect(self.ui.pushButton_3, SIGNAL('clicked()'), self.networksettings)
 
+        self.setWindowTitle('Options')
     def generalsettings(self):
         self.tab.setParent(None)
         self.tab = self.general
@@ -273,6 +274,7 @@ class MainWindow(QMainWindow):
         aboutAction.triggered.connect(self.about)
         self.toolBar.addAction(aboutAction)
 
+        self.setWindowTitle('LanTransfer')
     def changeToUploadMode(self):
         self.select.setParent(None)
         self.select = StreamWidget(self.ui.formLayoutWidget)
