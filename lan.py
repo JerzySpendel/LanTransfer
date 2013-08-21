@@ -1,6 +1,7 @@
 __author__ = 'Jerzy Spendel'
 
 import sys
+import re
 from Utils import Config
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
@@ -66,6 +67,12 @@ class DownloadWidget(QWidget):
         self.downloadthread = DP()
         self.ui.setupUi(self)
         self.initSignals()
+        self.initUi()
+
+    def initUi(self):
+        stringlist = '212.106.166.37;212.106.166.38'.split(';')
+        completer = QCompleter(stringlist, self.ui.lineEdit)
+        self.ui.lineEdit.setCompleter(completer)
 
     def setpath(self):
         dialog = QFileDialog()
@@ -172,11 +179,12 @@ class OptionsWidget(QWidget):
 
         #Saving each property to file :)
         Config.changeProperty('THREADS', threads)
-        Config.changeProperty('CHUNKSIZE', chunksize)
+        Config.changeProperty('CHUNK_SIZE', chunksize)
         Config.changeProperty('DOWNLOAD_MAX',downspeed)
         Config.changeProperty('UPLOAD_MAX', upspeed)
 
-        self.setParent(None)
+        Config.saveContacts(self.general.ui.plainTextEdit.toPlainText())
+        self.hide()
     def initSignals(self):
         QObject.connect(self.ui.pushButton, SIGNAL('clicked()'), self.save)
 
@@ -185,14 +193,32 @@ class GeneralSettings(QWidget):
         QWidget.__init__(self,parent)
         self.ui = GeneralSettings_Form()
         self.ui.setupUi(self)
+        self.fillContacts()
         self.initUi()
 
     def initUi(self):
         QObject.connect(self.ui.horizontalSlider, SIGNAL('sliderMoved(int)'), self.sliderMoved)
+        QObject.connect(self.ui.plainTextEdit, SIGNAL('textChanged()'),self.textchanged)
+
+    def textchanged(self):
+        defaultText = """xxx.xxx.xxx.xxx - NAME (xses are IP address)
+
+Each recipient has to be declared in new line. If you understand this than clear this box and fill it with your buddies :)
+Example:
+212.106.166.37 - Jerzy Spendel"""
+        if self.ui.plainTextEdit.toPlainText() == '':
+            pass
+        elif self.ui.plainTextEdit.toPlainText() != defaultText:
+            pass
 
     def sliderMoved(self,msg):
         self.ui.label_4.setText(str(msg))
 
+    def fillContacts(self):
+        text = ''
+        for pair in Config.openContacts():
+            text = text+pair[0]+' - '+pair[1]+'\n'
+        self.ui.plainTextEdit.setPlainText(text)
 
 class NetworkSettings(QWidget):
     def __init__(self,parent=None):

@@ -1,5 +1,10 @@
 __author__ = 'Jerzy Spendel'
 import os
+import re
+
+#Simple regex to extract ip address and name from saved contacts
+regex = re.compile(r'(?P<IP>([0-9]{1,3}\.){3}[0-9]{1,3}) - (?P<NAME>.*)')
+OPTIONS = ('CHUNK_SIZE', 'THREADS', 'DOWNLOAD_MAX', 'UPLOAD_MAX')
 
 
 class Config(object):
@@ -9,20 +14,22 @@ class Config(object):
         path = Config.path
         if not os.path.exists(path):
             Config.file = open(path, 'w')
-            lines = ['CHUNK_SIZE:NONE\n','THREADS:NONE\n', 'DOWNLOAD_MAX:NONE\n', 'UPLOAD_MAX:NONE']
+            lines = ['CHUNK_SIZE:NONE\n','THREADS:NONE\n', 'DOWNLOAD_MAX:NONE\n', 'UPLOAD_MAX:NONE\n','-----CONTACTS-----\n']
             Config.file.writelines(lines)
             Config.file.close()
         Config.file = open(path, 'r+')
         Config.parse()
+        Config.openContacts()
 
     def parse():
-        for line in Config.file.readlines():
+        lines = []
+        for line in open(Config.path,'r'):
+            if line.split(':')[0] in OPTIONS:
+                lines.append(line)
+        for line in lines:
             data = line.split(':')
-            if not data[0].strip() in ('CHUNK_SIZE','THREADS', 'DOWNLOAD_MAX', 'UPLOAD_MAX'):
-                raise Exception('Wrong data in config file, please delete config file to recreate it!')
             Config.data[data[0]] = data[1].strip()
         Config.data['CWD'] = os.path.dirname(__file__)
-        print(Config.data['CWD'])
         Config.initResourcePaths()
 
         if Config.data['THREADS'] == 'NONE':
@@ -42,10 +49,30 @@ class Config(object):
         lines = configF.readlines()
         for line in lines:
             property = line.strip().split(':')[0]
-            Value = line.strip().split(':')[1]
             if name == property:
                 index = lines.index(line)
                 lines[index] = property+':'+str(value)+('\n' if line.count('\n')>0 else '')
         configF = open(Config.path, 'w')
         configF.writelines(lines)
         configF.close()
+
+    def saveContacts(data):
+        all = regex.findall(data)
+        tosave = []
+        for line in open(Config.path, 'r'):
+            if (line.split(':')[0] in OPTIONS) or (line == '-----CONTACTS-----') or (line == '-----CONTACTS-----\n'):
+                tosave.append(line)
+        for found in all:
+            tosave.append(found[0] + ' - ' + found[len(found)-1]+'\n')
+        write = open(Config.path, 'w')
+        write.writelines(tosave)
+        write.close()
+
+    #Returns list like this: [(IP1,NAME1),(IP2,NAME2)...]
+    def openContacts():
+        all = regex.findall(open(Config.path, 'r').read())
+        result = []
+        for found in all:
+            result.append((found[0],found[len(found)-1]))
+        print(result)
+        return result

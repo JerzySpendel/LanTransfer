@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'downloadwidget.ui'
 #
-# Created: Mon Aug 19 21:06:55 2013
+# Created: Tue Aug 20 16:22:36 2013
 #      by: PyQt4 UI code generator 4.10.2
 #
 # WARNING! All changes made in this file will be lost!

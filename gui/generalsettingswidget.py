@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'general_settings.ui'
 #
-# Created: Mon Aug 19 21:06:56 2013
+# Created: Tue Aug 20 16:22:37 2013
 #      by: PyQt4 UI code generator 4.10.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -52,6 +52,12 @@ class Ui_Form(object):
         self.label_4 = QtGui.QLabel(self.frame)
         self.label_4.setGeometry(QtCore.QRect(340, 10, 16, 20))
         self.label_4.setObjectName(_fromUtf8("label_4"))
+        self.label_3 = QtGui.QLabel(self.frame)
+        self.label_3.setGeometry(QtCore.QRect(10, 70, 331, 16))
+        self.label_3.setObjectName(_fromUtf8("label_3"))
+        self.plainTextEdit = QtGui.QPlainTextEdit(self.frame)
+        self.plainTextEdit.setGeometry(QtCore.QRect(10, 90, 321, 101))
+        self.plainTextEdit.setObjectName(_fromUtf8("plainTextEdit"))
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -62,4 +68,10 @@ class Ui_Form(object):
         self.label_2.setText(_translate("Form", "Size of chunk (in bytes): ", None))
         self.lineEdit.setText(_translate("Form", "1024", None))
         self.label_4.setText(_translate("Form", "1", None))
+        self.label_3.setText(_translate("Form", "Contact list (save here your most common recipients):", None))
+        self.plainTextEdit.setPlainText(_translate("Form", "xxx.xxx.xxx.xxx - NAME (xses are IP address)\n"
+"\n"
+"Each recipient has to be declared in new line. If you understand this than clear this box and fill it with your buddies :)\n"
+"Example:\n"
+"212.106.166.37 - Jerzy Spendel", None))
 
