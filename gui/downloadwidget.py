@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'downloadwidget.ui'
 #
-# Created: Tue Aug 20 16:22:36 2013
+# Created: Thu Aug 22 18:55:22 2013
 #      by: PyQt4 UI code generator 4.10.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -41,13 +41,13 @@ class Ui_Form(object):
         self.progressBar.setProperty("value", 0)
         self.progressBar.setObjectName(_fromUtf8("progressBar"))
         self.label_2 = QtGui.QLabel(Form)
-        self.label_2.setGeometry(QtCore.QRect(0, 40, 81, 16))
+        self.label_2.setGeometry(QtCore.QRect(0, 40, 51, 16))
         self.label_2.setObjectName(_fromUtf8("label_2"))
         self.pushButton_2 = QtGui.QPushButton(Form)
         self.pushButton_2.setGeometry(QtCore.QRect(60, 40, 80, 20))
         self.pushButton_2.setObjectName(_fromUtf8("pushButton_2"))
         self.label_3 = QtGui.QLabel(Form)
-        self.label_3.setGeometry(QtCore.QRect(260, 80, 211, 31))
+        self.label_3.setGeometry(QtCore.QRect(10, 80, 211, 31))
         self.label_3.setAcceptDrops(True)
         self.label_3.setAutoFillBackground(False)
         self.label_3.setText(_fromUtf8(""))
@@ -63,6 +63,12 @@ class Ui_Form(object):
         self.label_5 = QtGui.QLabel(Form)
         self.label_5.setGeometry(QtCore.QRect(150, 40, 21, 21))
         self.label_5.setObjectName(_fromUtf8("label_5"))
+        self.pushButton_4 = QtGui.QPushButton(Form)
+        self.pushButton_4.setGeometry(QtCore.QRect(260, 10, 21, 20))
+        self.pushButton_4.setObjectName(_fromUtf8("pushButton_4"))
+        self.listView = QtGui.QListView(Form)
+        self.listView.setGeometry(QtCore.QRect(290, 10, 131, 101))
+        self.listView.setObjectName(_fromUtf8("listView"))
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -75,4 +81,5 @@ class Ui_Form(object):
         self.pushButton_2.setText(_translate("Form", "Set path", None))
         self.pushButton_3.setText(_translate("Form", "Save As", None))
         self.label_5.setText(_translate("Form", "or", None))
+        self.pushButton_4.setText(_translate("Form", ">", None))
 

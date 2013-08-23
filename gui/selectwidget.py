@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'selectwidget.ui'
 #
-# Created: Tue Aug 20 16:22:37 2013
+# Created: Thu Aug 22 18:55:22 2013
 #      by: PyQt4 UI code generator 4.10.2
 #
 # WARNING! All changes made in this file will be lost!

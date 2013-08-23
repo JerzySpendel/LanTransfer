@@ -66,13 +66,24 @@ class DownloadWidget(QWidget):
         self.ui = DStream_Form()
         self.downloadthread = DP()
         self.ui.setupUi(self)
-        self.initSignals()
+        self.completer = None
         self.initUi()
+        self.initSignals()
 
     def initUi(self):
-        stringlist = '212.106.166.37;212.106.166.38'.split(';')
-        completer = QCompleter(stringlist, self.ui.lineEdit)
-        self.ui.lineEdit.setCompleter(completer)
+        self.initModel()
+        self.initCompleter()
+        self.ui.listView.setModel(self.model)
+
+    def initModel(self):
+        words = []
+        for contact in Config.openContacts():
+            words.append(contact[1])
+        self.model = QStringListModel(words)
+    def initCompleter(self):
+        self.completer = QCompleter(None, self.ui.lineEdit)
+        self.completer.setModel(self.model)
+        self.ui.lineEdit.setCompleter(self.completer)
 
     def setpath(self):
         dialog = QFileDialog()
@@ -95,10 +106,24 @@ class DownloadWidget(QWidget):
     def speedUpdate(self, msg):
         self.speed = msg
         self.ui.label_3.setText(str(msg)+' kbps')
+
     def timeUpdate(self, msg):
         self.time = msg
         self.ui.label_4.setText('Time left: ' + str(self.time) + ' seconds')
 
+    def test(self, msg):
+        print(msg)
+
+    def setIp(self,index):
+        name = index.data(Qt.DisplayRole)
+        ip = None
+        for contact in Config.openContacts():
+            if contact[1] == name:
+                ip = contact[0]
+        if ip is not None:
+            self.ui.lineEdit.setText(ip)
+        else:
+            print('Couldn\'t get ip')
     def initSignals(self):
         QObject.connect(self.ui.pushButton_2, SIGNAL('clicked()'), self.setpath)
         QObject.connect(self.ui.pushButton_3, SIGNAL('clicked()'), self.setfile)
@@ -106,8 +131,8 @@ class DownloadWidget(QWidget):
         QObject.connect(self.downloadthread.DM, SIGNAL('percentUpdate(int)'), self.percentUpdate)
         QObject.connect(self.downloadthread.DM, SIGNAL('timeUpdate(PyQt_PyObject)'), self.timeUpdate)
         QObject.connect(self.downloadthread.DM, SIGNAL('speedUpdate(int)'), self.speedUpdate)
-
-
+        QObject.connect(self.completer, SIGNAL('activated(QString)'), self.test)
+        QObject.connect(self.ui.listView, SIGNAL('clicked(QModelIndex)'),self.setIp)
 class SelectWidget(QWidget):
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)

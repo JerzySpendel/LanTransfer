@@ -74,5 +74,4 @@ class Config(object):
         result = []
         for found in all:
             result.append((found[0],found[len(found)-1]))
-        print(result)
         return result
