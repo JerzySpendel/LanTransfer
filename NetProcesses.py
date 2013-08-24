@@ -62,7 +62,17 @@ def percent(my, all):
 class UploadProcess(QThread):
     #Inner class responsible for calculating MD5 checksum
     #While UploadProcess will upload the file
+    class ComputeMD5(QThread):
+        def __init__(self, file):
+            QThread.__init__(self)
+            self.file = file
 
+        def run(self):
+            f = open(self.file, 'rb')
+            m = hashlib.md5()
+            for chunk in f:
+                m.update(chunk)
+            self.emit(SIGNAL('md5checksum(PyQt_PyObject)'),m.hexdigest())
     class GeneratorUpload(QThread):
         def __init__(self, port, generator, parent=None):
             QThread.__init__(self, parent)
@@ -89,7 +99,12 @@ class UploadProcess(QThread):
     def __init__(self):
         QThread.__init__(self)
         self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.s.bind(('', 8880))
+        try:
+            self.s.bind(('', 8880))
+        except OSError:
+            print('Some socket is already using port 8880. Try later.')
+            print('QUITTING')
+            quit()
         self.s.listen(10)
 
         self.references = []
@@ -117,11 +132,17 @@ class UploadProcess(QThread):
                 self.references.append(UP)
                 UP.start()
                 i += 1
+            md5computer = self.ComputeMD5(self.path)
+            self.references.append(md5computer)
+            md5computer.start()
+            QObject.connect(self.references[len(self.references)-1], SIGNAL('md5checksum(PyQt_PyObject)'), self.sendmd5)
             channel.sendall(b'sockets created')
         if channel.recv(1024).decode('utf-8') == 'checksum please':
             channel.sendall(str(self.md5_checksum).encode('utf-8'))
             channel.sendall(b'end')
 
+    def sendmd5(self,checksum):
+        print(checksum)
 
 class DownloadProcess(QThread):
 
