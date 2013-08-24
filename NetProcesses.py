@@ -7,8 +7,6 @@ import os
 import hashlib
 from Utils import Config
 from PyQt4.QtCore import *
-from multiprocessing import Process
-
 
 #The size of chunk sendalling through sockets
 CHUNK_SIZE = 1024
@@ -64,15 +62,6 @@ def percent(my, all):
 class UploadProcess(QThread):
     #Inner class responsible for calculating MD5 checksum
     #While UploadProcess will upload the file
-    class ComputeMD5(QThread):
-        def __init__(self, parent):
-            QThread.__init__(self, parent)
-            self.parent = parent
-
-        def run(self):
-            m = hashlib.md5()
-            m.update(open(self.parent.path, 'rb').read())
-            self.parent.md5_checksum = m.hexdigest()
 
     class GeneratorUpload(QThread):
         def __init__(self, port, generator, parent=None):
@@ -102,8 +91,6 @@ class UploadProcess(QThread):
         self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.s.bind(('', 8880))
         self.s.listen(10)
-        self.computeMD5 = self.ComputeMD5(self)
-        self.md5_checksum = None
 
         self.references = []
     def config(self, path_to_file):
@@ -280,10 +267,15 @@ class DownloadProcess(QThread):
         if folderpath is not None:
             self.folderpath = folderpath
         else:
-            self.path = Config.data['CWD']
+            self.folderpath = Config.data['CWD']
         if filepath is not None:
             self.filepath = filepath
-        self.s.connect((self.ip, 8880))
+        else:
+            self.filepath = None
+        try:
+            self.s.connect((self.ip, 8880))
+        except Exception:
+            print('[Info] Already connected')
         print('IP address set for ', self.ip)
 
     def run(self):

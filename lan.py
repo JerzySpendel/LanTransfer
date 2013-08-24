@@ -89,7 +89,7 @@ class DownloadWidget(QWidget):
         dialog = QFileDialog()
         self.path = dialog.getExistingDirectory(self,'Select Directory')
         self.ui.label_3.setText(str(self.path))
-        self.downloadthread.config(self.ui.lineEdit.text(), path=self.path)
+        self.downloadthread.config(self.ui.lineEdit.text(), folderpath=self.path)
 
     def setfile(self):
         dialog = QFileDialog()
@@ -105,7 +105,7 @@ class DownloadWidget(QWidget):
 
     def speedUpdate(self, msg):
         self.speed = msg
-        self.ui.label_3.setText(str(msg)+' kbps')
+        self.ui.label_3.setText('<span style="color: green;">'+str(msg)+' kbps'+"</span>")
 
     def timeUpdate(self, msg):
         self.time = msg

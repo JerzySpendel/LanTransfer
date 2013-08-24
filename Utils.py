@@ -8,6 +8,7 @@ OPTIONS = ('CHUNK_SIZE', 'THREADS', 'DOWNLOAD_MAX', 'UPLOAD_MAX')
 
 
 class Config(object):
+    data = {}
     def init():
         Config.data = {}
         Config.path = os.path.expanduser('~') + '/.lantransfer.conf'
