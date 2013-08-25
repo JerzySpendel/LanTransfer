@@ -114,18 +114,18 @@ class UploadProcess(QThread):
 
     def run(self):
         QObject.emit(self, SIGNAL('makeBusy()'))
-        channel, addr = self.s.accept()
+        self.channel, addr = self.s.accept()
         QObject.emit(self, SIGNAL('unmakeBusy()'))
         f = open(self.path, 'rb')
         sent = 0
         bytes = os.path.getsize(self.path)
-        if channel.recv(1024).decode('utf-8') == 'name please':
-            channel.sendall(self.name.encode('utf-8'))
-        if channel.recv(1024).decode('utf-8') == 'size please':
-            channel.sendall(str(bytes).encode('utf-8'))
-        if channel.recv(1024).decode('utf-8') == 'threads please':
-            channel.sendall(str(Config.data['THREADS']).encode('utf-8'))
-        if channel.recv(1024).decode('utf-8') == 'file please':
+        if self.channel.recv(1024).decode('utf-8') == 'name please':
+            self.channel.sendall(self.name.encode('utf-8'))
+        if self.channel.recv(1024).decode('utf-8') == 'size please':
+            self.channel.sendall(str(bytes).encode('utf-8'))
+        if self.channel.recv(1024).decode('utf-8') == 'threads please':
+            self.channel.sendall(str(Config.data['THREADS']).encode('utf-8'))
+        if self.channel.recv(1024).decode('utf-8') == 'file please':
             i = 1
             for gen in intoChunks(self.path, int(Config.data['THREADS'])):
                 UP = self.GeneratorUpload(8880+i, gen)
@@ -136,13 +136,11 @@ class UploadProcess(QThread):
             self.references.append(md5computer)
             md5computer.start()
             QObject.connect(self.references[len(self.references)-1], SIGNAL('md5checksum(PyQt_PyObject)'), self.sendmd5)
-            channel.sendall(b'sockets created')
-        if channel.recv(1024).decode('utf-8') == 'checksum please':
-            channel.sendall(str(self.md5_checksum).encode('utf-8'))
-            channel.sendall(b'end')
-
+            self.channel.sendall(b'sockets created')
     def sendmd5(self,checksum):
-        print(checksum)
+        if self.channel.recv(1024).decode('utf-8') == 'checksum please':
+            self.channel.send(checksum.encode('utf-8'))
+
 
 class DownloadProcess(QThread):
 
@@ -189,21 +187,33 @@ class DownloadProcess(QThread):
             def run(self):
                 while True:
                     if self.DM.dones == [True]*self.DM.threads:
+                        m = hashlib.md5()
                         f = open(self.DM.folder_path + '/' + self.DM.name, 'wb')
                         part_files = []
                         for i in range(1, self.DM.threads + 1):
                             part_files.append(self.DM.folder_path + '/' + 'filepart.' + str(i))
                         for file in part_files:
                             fr = open(file,'rb')
+                            data = fr.read()
+                            m.update(data)
                             try:
                                 os.remove(file)
                             except IOError:
                                 print('I do not have acces to delete part files. Do it yourself.')
                             except Exception:
                                 print('Error while deleting files')
-                            f.write(fr.read())
+                            f.write(data)
                         f.flush()
                         f.close()
+                        self.DM.main_socket.sendall(b'checksum please')
+                        while True:
+                            recved = self.DM.main_socket.recv(1024)
+                            if len(recved) == 32:
+                                if recved.decode('utf-8') == m.hexdigest():
+                                    print('MD5 correct!')
+                                    self.DM.main_socket.close()
+                            else:
+                                continue
                         break
                     else:
                         time.sleep(0.5)
@@ -307,4 +317,3 @@ class DownloadProcess(QThread):
         self.DM.file_path = self.filepath
         self.DM.getData()
         self.DM.startDownload()
-        self.s.close()
