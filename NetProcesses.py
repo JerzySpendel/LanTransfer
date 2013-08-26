@@ -25,6 +25,12 @@ def intoChunks(file_path, amount_of_generators):
                 if data != b'':
                     yield data
                 else:
+                    try:
+                        os.remove(os.path.abspath(f.name))
+                    except IOError:
+                        print('I don\'t have privileges to delete part file, do it yourself')
+                    except Exception:
+                        prnt('Error occured while deleting part files')
                     break
 
         return generator
@@ -60,6 +66,9 @@ def percent(my, all):
 
 
 class UploadProcess(QThread):
+    class UploadManager(QObject):
+        def __init__(self):
+            QObject.__init__(self)
     #Inner class responsible for calculating MD5 checksum
     #While UploadProcess will upload the file
     class ComputeMD5(QThread):
