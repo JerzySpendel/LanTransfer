@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'general_settings.ui'
 #
-# Created: Thu Aug 22 18:55:23 2013
-#      by: PyQt4 UI code generator 4.10.2
+# Created: Thu Aug 29 12:40:33 2013
+#      by: PyQt4 UI code generator 4.10.3
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -26,9 +26,9 @@ except AttributeError:
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName(_fromUtf8("Form"))
-        Form.resize(361, 201)
+        Form.resize(362, 232)
         self.frame = QtGui.QFrame(Form)
-        self.frame.setGeometry(QtCore.QRect(0, 0, 361, 201))
+        self.frame.setGeometry(QtCore.QRect(0, 0, 361, 231))
         self.frame.setFrameShape(QtGui.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtGui.QFrame.Raised)
         self.frame.setObjectName(_fromUtf8("frame"))
@@ -53,11 +53,18 @@ class Ui_Form(object):
         self.label_4.setGeometry(QtCore.QRect(340, 10, 16, 20))
         self.label_4.setObjectName(_fromUtf8("label_4"))
         self.label_3 = QtGui.QLabel(self.frame)
-        self.label_3.setGeometry(QtCore.QRect(10, 70, 331, 16))
+        self.label_3.setGeometry(QtCore.QRect(10, 100, 331, 16))
         self.label_3.setObjectName(_fromUtf8("label_3"))
         self.plainTextEdit = QtGui.QPlainTextEdit(self.frame)
-        self.plainTextEdit.setGeometry(QtCore.QRect(10, 90, 321, 101))
+        self.plainTextEdit.setGeometry(QtCore.QRect(10, 120, 321, 101))
         self.plainTextEdit.setObjectName(_fromUtf8("plainTextEdit"))
+        self.checkBox = QtGui.QCheckBox(self.frame)
+        self.checkBox.setGeometry(QtCore.QRect(170, 70, 21, 19))
+        self.checkBox.setText(_fromUtf8(""))
+        self.checkBox.setObjectName(_fromUtf8("checkBox"))
+        self.label_5 = QtGui.QLabel(self.frame)
+        self.label_5.setGeometry(QtCore.QRect(10, 70, 131, 16))
+        self.label_5.setObjectName(_fromUtf8("label_5"))
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -74,4 +81,5 @@ class Ui_Form(object):
 "Each recipient has to be declared in new line. If you understand this than clear this box and fill it with your buddies :)\n"
 "Example:\n"
 "212.106.166.37 - Jerzy Spendel", None))
+        self.label_5.setText(_translate("Form", "Compress files", None))
 

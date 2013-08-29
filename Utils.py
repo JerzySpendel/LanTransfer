@@ -1,21 +1,23 @@
 __author__ = 'Jerzy Spendel'
 import os
 import re
+import lzma
 
 #Simple regex to extract ip address and name from saved contacts
 regex = re.compile(r'(?P<IP>([0-9]{1,3}\.){3}[0-9]{1,3}) - (?P<NAME>.*)')
-OPTIONS = ('CHUNK_SIZE', 'THREADS', 'DOWNLOAD_MAX', 'UPLOAD_MAX')
+OPTIONS = ('CHUNK_SIZE', 'THREADS', 'DOWNLOAD_MAX', 'UPLOAD_MAX', 'COMPRESS')
 
 
 class Config(object):
     data = {}
+
     def init():
         Config.data = {}
         Config.path = os.path.expanduser('~') + '/.lantransfer.conf'
         path = Config.path
         if not os.path.exists(path):
             Config.file = open(path, 'w')
-            lines = ['CHUNK_SIZE:NONE\n','THREADS:NONE\n', 'DOWNLOAD_MAX:NONE\n', 'UPLOAD_MAX:NONE\n','-----CONTACTS-----\n']
+            lines = ['CHUNK_SIZE:NONE\n','THREADS:NONE\n', 'DOWNLOAD_MAX:NONE\n', 'COMPRESS:False\n', 'UPLOAD_MAX:NONE\n', '-----CONTACTS-----\n']
             Config.file.writelines(lines)
             Config.file.close()
         Config.file = open(path, 'r+')
@@ -35,6 +37,10 @@ class Config(object):
 
         if Config.data['THREADS'] == 'NONE':
             Config.data['THREADS'] = 1
+        if (True if Config.data['COMPRESS'] =='True' else False) == True:
+            Config.data['COMPRESS'] = True
+        else:
+            Config.data['COMPRESS'] = False
 
     def initResourcePaths():
         cwd = Config.data['CWD']
@@ -76,3 +82,36 @@ class Config(object):
         for found in all:
             result.append((found[0],found[len(found)-1]))
         return result
+Config.init()
+
+class Compressor():
+    def __init__(self):
+        if not 'COMPRESS' in Config.data:
+            Config.init()
+
+        if Config.data['COMPRESS'] == True:
+            print('Compressor set to compress data')
+            self.comp = self.compData
+        else:
+            print('Compressor set to back given data')
+            self.comp = self.returnData
+
+    def compData(self, data):
+        return lzma.compress(data)
+
+    def returnData(self, data):
+        return data
+
+
+class Decompressor():
+    def __init__(self, createDecompressor):
+        if createDecompressor:
+            self.comp = self.decomp
+        else:
+            self.comp = self.returnData
+
+    def decomp(self, data):
+        return lzma.decompress(data)
+
+    def returnData(self, data):
+        return data

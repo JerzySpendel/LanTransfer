@@ -5,12 +5,13 @@ import socket
 import time
 import os
 import hashlib
+import lzma
 from Utils import Config
+from Utils import Compressor,Decompressor
 from PyQt4.QtCore import *
-
 #The size of chunk sendalling through sockets
-CHUNK_SIZE = 1024
-
+CHUNK_SIZE = 2048
+MAX_CHUNK_SIZE = CHUNK_SIZE*2
 #Function return list of generators
 #Each of generator is used to sendall part of file to corresposnding input socket to recipient
 def intoChunks(file_path, amount_of_generators):
@@ -20,10 +21,12 @@ def intoChunks(file_path, amount_of_generators):
         f = open(path_to_file, 'rb')
 
         def generator():
+            compressor = Compressor()
             while True:
                 data = f.read(CHUNK_SIZE)
                 if data != b'':
-                    yield data
+                    c = compressor.comp(data)
+                    yield c
                 else:
                     try:
                         os.remove(os.path.abspath(f.name))
@@ -134,6 +137,11 @@ class UploadProcess(QThread):
             self.channel.sendall(str(bytes).encode('utf-8'))
         if self.channel.recv(1024).decode('utf-8') == 'threads please':
             self.channel.sendall(str(Config.data['THREADS']).encode('utf-8'))
+        if self.channel.recv(1024).decode('utf-8') == 'lzma please':
+            if bool(Config.data['COMPRESS']) == True:
+                self.channel.sendall(b'lzma yes')
+            else:
+                self.channel.sendall(b'lzma no')
         if self.channel.recv(1024).decode('utf-8') == 'file please':
             i = 1
             for gen in intoChunks(self.path, int(Config.data['THREADS'])):
@@ -167,14 +175,15 @@ class DownloadProcess(QThread):
             self.DM = DM
 
         def run(self):
+            decompressor = Decompressor(self.DM.lzma)
             print('Download at port ', str(self.port), 'started')
             self.s.send(b'more please')
-            data = self.s.recv(CHUNK_SIZE)
+            data = decompressor.comp(self.s.recv(CHUNK_SIZE*2))
             while data != b'No MoRe bYYtes!#$@!df so sad :<':
                 self.DM.got += len(data)
                 self.file.write(data)
                 self.s.sendall(b'more please')
-                data = self.s.recv(CHUNK_SIZE)
+                data = self.s.recv(CHUNK_SIZE*2)
             self.file.flush()
             self.file.close()
             self.s.close()
@@ -221,6 +230,7 @@ class DownloadProcess(QThread):
                                 if recved.decode('utf-8') == m.hexdigest():
                                     print('MD5 correct!')
                                     self.DM.main_socket.close()
+                                    break
                             else:
                                 continue
                         break
@@ -283,6 +293,12 @@ class DownloadProcess(QThread):
             print('Amount of bytes: ', self.size)
             self.main_socket.sendall(b'threads please')
             self.threads = int(self.main_socket.recv(1024).decode('utf-8'))
+            self.main_socket.sendall(b'lzma please')
+            self.lzma = self.main_socket.recv(1024).decode('utf-8')
+            if self.lzma == 'lzma yes':
+                self.lzma = True
+            else:
+                self.lzma = False
             print('Threads: ', self.threads)
             self.dones = [False]*self.threads
             self.DC = self.DownloadChecker(self)

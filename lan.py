@@ -16,7 +16,6 @@ from gui.networksettingswidget import Ui_Form as NetworkSettings_Form
 from NetProcesses import UploadProcess as UP
 from NetProcesses import DownloadProcess as DP
 
-
 class StreamWidget(QWidget):
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
@@ -335,7 +334,6 @@ class MainWindow(QMainWindow):
         QObject.connect(self.ui.actionAbout_this_program, SIGNAL('triggered()'), self.about)
 
 if __name__ == '__main__':
-    Config.init()
     app = QApplication(sys.argv)
     okienko = MainWindow()
     app.exec_()
