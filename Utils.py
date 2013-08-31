@@ -41,6 +41,10 @@ class Config(object):
             Config.data['COMPRESS'] = True
         else:
             Config.data['COMPRESS'] = False
+        if Config.data['CHUNK_SIZE'] == 'NONE':
+            Config.data['CHUNK_SIZE'] = 4096
+        if Config.data['THREADS'] == 'NONE':
+            Config.data['THREADS'] = 1
 
     def initResourcePaths():
         cwd = Config.data['CWD']

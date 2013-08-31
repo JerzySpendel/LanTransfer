@@ -10,8 +10,7 @@ from Utils import Config
 from Utils import Compressor,Decompressor
 from PyQt4.QtCore import *
 #The size of chunk sendalling through sockets
-CHUNK_SIZE = 2048
-MAX_CHUNK_SIZE = CHUNK_SIZE*2
+CHUNK_SIZE = Config.data['CHUNK_SIZE']
 #Function return list of generators
 #Each of generator is used to sendall part of file to corresposnding input socket to recipient
 def intoChunks(file_path, amount_of_generators):

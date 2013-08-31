@@ -249,10 +249,10 @@ Example:
 
     def makeThreads(self):
         self.ui.horizontalSlider.setValue(int(Config.data['THREADS']))
-        self.ui.label_4.setText(Config.data['THREADS'])
+        self.ui.label_4.setText(str(Config.data['THREADS']))
 
     def makeChunksize(self):
-        self.ui.lineEdit.setText(Config.data['CHUNK_SIZE'])
+        self.ui.lineEdit.setText(str(Config.data['CHUNK_SIZE']))
 
 class NetworkSettings(QWidget):
     def __init__(self,parent=None):
