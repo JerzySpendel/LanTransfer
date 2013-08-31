@@ -153,6 +153,7 @@ class UploadProcess(QThread):
             md5computer.start()
             QObject.connect(self.references[len(self.references)-1], SIGNAL('md5checksum(PyQt_PyObject)'), self.sendmd5)
             self.channel.sendall(b'sockets created')
+
     def sendmd5(self,checksum):
         if self.channel.recv(1024).decode('utf-8') == 'checksum please':
             self.channel.send(checksum.encode('utf-8'))
@@ -205,21 +206,24 @@ class DownloadProcess(QThread):
                 while True:
                     if self.DM.dones == [True]*self.DM.threads:
                         m = hashlib.md5()
-                        f = open(self.DM.folder_path + '/' + self.DM.name, 'wb')
+                        if self.DM.file_path is None:
+                            f = open(self.DM.folder_path + '/' + self.DM.name, 'wb')
+                        else:
+                            f = open(self.DM.file_path, 'wb')
                         part_files = []
                         for i in range(1, self.DM.threads + 1):
                             part_files.append(self.DM.folder_path + '/' + 'filepart.' + str(i))
                         for file in part_files:
                             fr = open(file,'rb')
-                            data = fr.read()
-                            m.update(data)
+                            for chunk in fr:
+                                m.update(data)
+                                f.write(data)
                             try:
                                 os.remove(file)
                             except IOError:
                                 print('I do not have acces to delete part files. Do it yourself.')
                             except Exception:
                                 print('Error while deleting files')
-                            f.write(data)
                         f.flush()
                         f.close()
                         self.DM.main_socket.sendall(b'checksum please')
